@@ -1,11 +1,34 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../services/api";
+
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await api.login(email, password);
+      navigate("/dashboard");
+    } catch (err) {
+      setError("Invalid email or password");
+    }
+  };
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[#1a3b63] via-[#2b5c94] to-[#3d75b3]">
       <div className="bg-white p-8 rounded-xl shadow-lg w-96">
         <h2 className="text-3xl font-bold text-[#1a3b63] mb-6 text-center">
           Welcome Back
         </h2>
-        <form className="space-y-4">
+        {error && (
+          <div className="mb-4 p-2 text-red-500 text-center bg-red-100 rounded">
+            {error}
+          </div>
+        )}
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="email"
@@ -18,6 +41,8 @@ export const LoginPage = () => {
               id="email"
               className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#2C74B3] focus:border-transparent"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
@@ -32,6 +57,8 @@ export const LoginPage = () => {
               id="password"
               className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#2C74B3] focus:border-transparent"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between">
