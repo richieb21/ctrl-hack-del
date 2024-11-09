@@ -14,6 +14,7 @@ def check_password(hashed_password, password):
 # Create a user
 def create_user(username, email, password):
     hashed_password = hash_password(password)
+    
     user = {
         "username": username,
         "email": email,
@@ -33,13 +34,15 @@ def find_user_by_id(user_id):
 # Profile Model Functions
 
 # Create a profile
-def create_profile(user_id, linkedin, github, phone_number, master_resume):
+def create_profile(user_id, linkedin, github, phone_number):
     profile = {
         "user_id": ObjectId(user_id),
         "linkedin_profile": linkedin,
         "github_profile": github,
         "phone_number": phone_number,
-        "master_resume": master_resume
+        "skills": [],
+        "experiences": [],
+        "generated_resumes": []
     }
     return user_profiles_collection.insert_one(profile)
 
@@ -52,4 +55,27 @@ def update_profile(user_id, update_data):
     return user_profiles_collection.update_one(
         {"user_id": ObjectId(user_id)},
         {"$set": update_data}
+    )
+
+# Add a job experience to a profile
+def add_experience(user_id, job_title, date_range, job_description, skills):
+    new_experience = {
+        "job_title": job_title,
+        "date_range": date_range,
+        "job_description": job_description,
+        "skills": skills
+    }
+
+    user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$push": {"experiences": new_experience}}
+    )
+
+def add_skills(user_id, skills):
+    new_skills = set(user_profiles_collection.find_one({"user_id": ObjectId(user_id)}.get("skills", [])))
+    for skill in skills:
+        new_skills.add(skill)
+    user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"skills", new_skills}}
     )
