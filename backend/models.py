@@ -71,7 +71,7 @@ def add_experience(user_id, job_title, date_range, job_description, skills):
         {"$push": {"experiences": new_experience}}
     )
 
-def add_skills(user_id, skills):
+def add_skills(user_id, skills): #  ADD CATOGORIES FOR SKILLS
     new_skills = set(user_profiles_collection.find_one({"user_id": ObjectId(user_id)}.get("skills", [])))
     for skill in skills:
         new_skills.add(skill)
