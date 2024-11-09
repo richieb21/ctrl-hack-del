@@ -34,12 +34,12 @@ def find_user_by_id(user_id):
 # Profile Model Functions
 
 # Create a profile
-def create_profile(user_id, linkedin, github, phone_number):
+def create_profile(user_id):
     profile = {
         "user_id": ObjectId(user_id),
-        "linkedin_profile": linkedin,
-        "github_profile": github,
-        "phone_number": phone_number,
+        "linkedin_profile": "",
+        "github_profile": "",
+        "phone_number": "",
         "skills": [],
         "experiences": [],
         "generated_resumes": []
@@ -72,10 +72,11 @@ def add_experience(user_id, job_title, date_range, job_description, skills):
     )
 
 def add_skills(user_id, skills): #  ADD CATOGORIES FOR SKILLS
-    new_skills = set(user_profiles_collection.find_one({"user_id": ObjectId(user_id)}.get("skills", [])))
+    current_skills = user_profiles_collection.find_one({"user_id": ObjectId(user_id)})
+    new_skills = set(current_skills.get("skills", []))
     for skill in skills:
         new_skills.add(skill)
     user_profiles_collection.update_one(
         {"user_id": ObjectId(user_id)},
-        {"$set": {"skills", new_skills}}
+        {"$set": {"skills": list(new_skills)}}
     )

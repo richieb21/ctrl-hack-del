@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import create_profile, get_profile_by_user_id, update_profile
+from models import create_profile, get_profile_by_user_id, update_profile, add_skills
 import jwt
 from functools import wraps
 from dotenv import load_dotenv
@@ -17,6 +17,8 @@ def token_required(f):
         if not token:
             return jsonify({'message': 'Token is missing!'}), 403
         try:
+            if token.startswith('Bearer '):
+                token = token.split(' ')[1]
             data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
             user_id = data['user_id']
         except:
@@ -52,3 +54,18 @@ def get_profile(user_id):
         profile['user_id'] = str(profile['user_id'])
         return jsonify(profile)
     return jsonify({'message': 'Profile not found'}), 404
+
+@profile_bp.route('/skills', methods=['GET'])
+@token_required
+def get_skills(user_id):
+    profile = get_profile_by_user_id(user_id)
+    return jsonify(profile['skills'])
+
+@profile_bp.route('/skills', methods=['POST'])
+@token_required
+def update_skills(user_id):
+    data = request.get_json()
+    if not data.get('skills'):
+        return jsonify({'message': 'Skills are required'}), 400
+    add_skills(user_id, data['skills'])
+    return jsonify({'message': 'Skills updated successfully'})

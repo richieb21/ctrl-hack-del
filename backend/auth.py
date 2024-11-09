@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import create_user, find_user_by_email, check_password
+from models import create_user, find_user_by_email, check_password, create_profile
 import jwt
 import datetime
 from functools import wraps
@@ -36,7 +36,13 @@ def register():
     if existing_user:
         return jsonify({'message': 'Email already exists'}), 409
 
-    create_user(data['username'], data['email'], data['password'])
+    result = create_user(data['username'], data['email'], data['password'])
+    user_id = str(result.inserted_id)
+    try:
+        create_profile(user_id)
+    except Exception as e:
+        print(e)
+
     return jsonify({'message': 'User registered successfully'})
 
 @auth_bp.route('/login', methods=['POST'])
