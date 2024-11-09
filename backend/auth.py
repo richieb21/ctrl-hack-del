@@ -30,11 +30,11 @@ def token_required(f):
 def register():
     data = request.get_json()
     if not data or not data.get('username') or not data.get('password') or not data.get('email'):
-        return jsonify({'message': 'Invalid data'}), 400
+        return jsonify({'message': 'Invalid data: Please provide username, password, and/or email'}), 400
 
     existing_user = find_user_by_email(data['email'])
     if existing_user:
-        return jsonify({'message': 'User already exists'}), 409
+        return jsonify({'message': 'Email already exists'}), 409
 
     create_user(data['username'], data['email'], data['password'])
     return jsonify({'message': 'User registered successfully'})
