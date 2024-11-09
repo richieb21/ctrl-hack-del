@@ -12,7 +12,7 @@ export const LoginPage = () => {
     e.preventDefault();
     try {
       await api.login(email, password);
-      navigate("/dashboard");
+      navigate("/home");
     } catch (err) {
       setError("Invalid email or password");
     }

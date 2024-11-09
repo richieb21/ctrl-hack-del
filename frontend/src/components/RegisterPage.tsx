@@ -13,7 +13,7 @@ export const RegisterPage = () => {
     e.preventDefault();
     try {
       await api.register(username, email, password);
-      navigate("/login");
+      navigate("/onboarding");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to register");
     }

@@ -58,4 +58,15 @@ export const api = {
       throw error;
     }
   },
+
+  async updateProfile(data: any) {
+    try {
+      const response = await fetch(`${API_URL}/user/update`, {
+        method: "POST",
+      });
+    } catch (error) {
+      console.error("Update profile error:", error);
+      throw error;
+    }
+  },
 };
