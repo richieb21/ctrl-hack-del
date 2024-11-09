@@ -1,3 +1,5 @@
 # Ignore venv and .env
 .venv/
 .env
+
+backend/__pycache__/
