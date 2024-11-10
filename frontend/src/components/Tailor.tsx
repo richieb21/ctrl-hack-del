@@ -1,35 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
-import { Resume } from "../constants/types";
 import DraggableSection from "./tailor/DraggableSection";
-import { api } from "../services/api";
+import { useResume } from "../context/ResumeContext";
 import "./Tailor.css";
+import { api } from "../services/api";
 
 const Tailor: React.FC = () => {
-  const [resume, setResume] = useState<Resume | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchData = async () => {
-    try {
-      console.log("Fetching data...");
-      const data = await api.generateResumeJSON();
-      if (!data || !data.sections) {
-        throw new Error("Invalid resume data received");
-      }
-      console.log(data);
-      setResume(data);
-      setError(null);
-    } catch (err) {
-      setError("Failed to load resume data. Please try again.");
-      console.error("Error fetching resume:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { resume, loading, error, setResume, refreshResume } = useResume();
 
   const onDragEnd = (result: DropResult) => {
     if (!resume) return;
@@ -37,60 +14,38 @@ const Tailor: React.FC = () => {
     const { source, destination, type } = result;
     if (!destination) return;
 
-    console.log("Drag result:", {
-      type,
-      source,
-      destination,
-      sourceSection: source.droppableId,
-      destSection: destination.droppableId,
-    });
-
     const newResume = { ...resume };
 
     if (type === "section") {
-      console.log("Moving section");
       const [removed] = newResume.sections.splice(source.index, 1);
       newResume.sections.splice(destination.index, 0, removed);
     } else if (type === "subsection") {
-      console.log("Moving subsection");
-      const sourceSectionIndex = parseInt(source.droppableId.split("-")[1]);
-      const destSectionIndex = parseInt(destination.droppableId.split("-")[1]);
+      const sourceSectionIndex = newResume.sections.findIndex(
+        (section) => section.id === source.droppableId
+      );
+      const destinationSectionIndex = newResume.sections.findIndex(
+        (section) => section.id === destination.droppableId
+      );
 
-      const sourceSectionKey = Object.keys(
-        newResume.sections[sourceSectionIndex]
-      )[0];
-      const sourceItems =
-        newResume.sections[sourceSectionIndex][sourceSectionKey];
+      if (sourceSectionIndex === -1 || destinationSectionIndex === -1) return;
 
-      const [removed] = sourceItems.splice(source.index, 1);
+      const sourceSection = newResume.sections[sourceSectionIndex];
+      const destinationSection = newResume.sections[destinationSectionIndex];
 
-      if (sourceSectionIndex !== destSectionIndex) {
-        const destSectionKey = Object.keys(
-          newResume.sections[destSectionIndex]
-        )[0];
-        newResume.sections[destSectionIndex][destSectionKey].splice(
-          destination.index,
-          0,
-          removed
-        );
-      } else {
-        sourceItems.splice(destination.index, 0, removed);
-      }
-
-      console.log("After move:", newResume.sections);
+      const [movedItem] = sourceSection.items.splice(source.index, 1);
+      destinationSection.items.splice(destination.index, 0, movedItem);
     } else if (type === "bullet") {
-      console.log("Moving bullet");
-      const [_, sectionIndex, itemIndex] = source.droppableId.split("-");
-      const sectionKey = Object.keys(
-        newResume.sections[parseInt(sectionIndex)]
-      )[0];
-      const item =
-        newResume.sections[parseInt(sectionIndex)][sectionKey][
-          parseInt(itemIndex)
-        ];
+      const sourceItem = newResume.sections
+        .flatMap((section) => section.items)
+        .find((item) => item.id === source.droppableId);
+      const destinationItem = newResume.sections
+        .flatMap((section) => section.items)
+        .find((item) => item.id === destination.droppableId);
 
-      const [removed] = item.subPoints.splice(source.index, 1);
-      item.subPoints.splice(destination.index, 0, removed);
+      if (!sourceItem || !destinationItem) return;
+
+      const [movedPoint] = sourceItem.subPoints.splice(source.index, 1);
+      destinationItem.subPoints.splice(destination.index, 0, movedPoint);
     }
 
     setResume(newResume);
@@ -100,6 +55,7 @@ const Tailor: React.FC = () => {
     if (!resume) return;
 
     try {
+      // await api.saveResumeJSON(resume);
       alert("Resume order saved successfully!");
     } catch (err) {
       console.error("Error saving resume order:", err);
@@ -115,7 +71,7 @@ const Tailor: React.FC = () => {
     return (
       <div className="error-container">
         <p>{error}</p>
-        <button onClick={() => fetchData()}>Retry</button>
+        <button onClick={refreshResume}>Retry</button>
       </div>
     );
   }
@@ -136,17 +92,13 @@ const Tailor: React.FC = () => {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {resume.sections.map((section, index) => {
-                    const sectionKey = Object.keys(section)[0];
-                    return (
-                      <DraggableSection
-                        key={sectionKey}
-                        sectionTitle={sectionKey}
-                        items={section[sectionKey]}
-                        index={index}
-                      />
-                    );
-                  })}
+                  {resume.sections.map((section, index) => (
+                    <DraggableSection
+                      key={section.id}
+                      section={section}
+                      index={index}
+                    />
+                  ))}
                   {provided.placeholder}
                 </div>
               )}

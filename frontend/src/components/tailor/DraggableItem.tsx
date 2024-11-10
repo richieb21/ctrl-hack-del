@@ -4,29 +4,26 @@ import { ResumeItem } from "../../constants/types";
 
 interface DraggableItemProps {
   item: ResumeItem;
-  sectionIndex: number;
-  itemIndex: number;
+  sectionId: string;
+  index: number;
 }
 
 const DraggableItem: React.FC<DraggableItemProps> = ({
   item,
-  sectionIndex,
-  itemIndex,
+  sectionId,
+  index,
 }) => {
   if (!item || !item.subPoints) return null;
 
-  const itemId = `item-${sectionIndex}-${itemIndex}`;
-
   return (
-    <Draggable draggableId={itemId} index={itemIndex}>
+    <Draggable draggableId={item.id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
           className="resume-item"
         >
-          <div className="item-header">
+          <div className="item-header" {...provided.dragHandleProps}>
             <h3>{item.title}</h3>
             <div className="item-subheader">
               <span>{item.subTitle}</span>
@@ -34,21 +31,18 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
               <span>{`${item.timeFrom} - ${item.timeTo}`}</span>
             </div>
           </div>
-          <Droppable
-            droppableId={`bullets-${sectionIndex}-${itemIndex}`}
-            type="bullet"
-          >
+          <Droppable droppableId={item.id} type="bullet">
             {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 className="bullet-points"
               >
-                {item.subPoints?.map((point, index) => (
+                {item.subPoints.map((point, pointIndex) => (
                   <Draggable
-                    key={`bullet-${sectionIndex}-${itemIndex}-${index}`}
-                    draggableId={`bullet-${sectionIndex}-${itemIndex}-${index}`}
-                    index={index}
+                    key={point.id}
+                    draggableId={point.id}
+                    index={pointIndex}
                   >
                     {(provided) => (
                       <div
@@ -57,7 +51,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
                         {...provided.dragHandleProps}
                         className="bullet-point"
                       >
-                        {point}
+                        {point.text}
                       </div>
                     )}
                   </Draggable>

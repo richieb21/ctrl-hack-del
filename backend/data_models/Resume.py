@@ -4,7 +4,7 @@ import io
 from .Block import Block
 
 class Resume(Block):
-    def __init__(self, name, email, linkedin, phone, github, sections:Section):
+    def __init__(self, name, email, linkedin, phone, github, sections):
         self.name = name
         self.email = email
         self.linkedin = linkedin
@@ -21,7 +21,6 @@ class Resume(Block):
             "github": self.github,
             "sections": [section.toDict() for section in self.sections]
         }
-
 
     def resumeToPdf(self):
         output_pdf_name = f"resume-{self.name.replace(' ', '')}.pdf"
@@ -54,7 +53,6 @@ class Resume(Block):
 
         # # Clean up the temporary .tex file
         # os.remove(temp_tex_file)
-
 
     def toLatex(self) -> str:
         ret = f"""\\documentclass[letterpaper,11pt]{{article}}

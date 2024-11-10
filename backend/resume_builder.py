@@ -21,7 +21,7 @@ def build_resume_from_profile(profile_data):
     for exp in profile_data.get('experiences', []):
         experience = Experience(
             title=exp.get('title', ''),
-            subTitle=exp.get('position', ''),
+            subTitle=exp.get('company', ''),
             timeFrom=exp.get('date', '').split(' - ')[0] if ' - ' in exp.get('date', '') else '',
             timeTo=exp.get('date', '').split(' - ')[1] if ' - ' in exp.get('date', '') else exp.get('date', ''),
             location=exp.get('location', ''),
@@ -36,8 +36,8 @@ def build_resume_from_profile(profile_data):
         project = Project(
             title=proj.get('name', ''),
             subTitle='',
-            timeFrom=proj.get('date', '').split(' - ')[0] if ' - ' in proj.get('date', '') else '',
-            timeTo=proj.get('date', '').split(' - ')[1] if ' - ' in proj.get('date', '') else proj.get('date', ''),
+            timeFrom=proj.get('date', ''),
+            timeTo='',
             link=proj.get('link', ''),
             points=proj.get('description', [])
         )
@@ -59,12 +59,11 @@ def build_resume_from_profile(profile_data):
     extracurricular_section = ExtracurricularSection(extracurriculars)
 
     # Build Skills Section
-    skills_data = profile_data.get('skills', {})
     skills = Skills(
-        languages=skills_data.get('language', []),
-        frameworks=skills_data.get('framework', []),
-        devTools=skills_data.get('tool', []),
-        other=skills_data.get('other', [])
+        languages=profile_data.get('skills', {}).get('language', []),
+        frameworks=profile_data.get('skills', {}).get('framework', []),
+        devTools=profile_data.get('skills', {}).get('tool', []),
+        other=profile_data.get('skills', {}).get('other', [])
     )
     skills_section = SkillsSection([skills])
 
@@ -74,9 +73,15 @@ def build_resume_from_profile(profile_data):
         name=profile_data.get('name', ''),
         email=links.get('email', ''),
         linkedin=links.get('linkedin_profile', ''),
-        phone='',  # Add phone number if available in profile
+        phone='',
         github=links.get('github_profile', ''),
-        sections=[education_section, experience_section, project_section, extracurricular_section, skills_section]
+        sections=[
+            education_section,
+            experience_section,
+            project_section,
+            extracurricular_section,
+            skills_section
+        ]
     )
 
     return resume

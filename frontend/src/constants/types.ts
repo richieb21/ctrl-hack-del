@@ -55,12 +55,12 @@ export type Education = {
 export type User = {
   name: string;
   links: {
-	email: string;
-	github_profile: string,
-	linkedin_profile: string,
-	portfolio_link: string,
-	x_profile: string
-  }
+    email: string;
+    github_profile: string;
+    linkedin_profile: string;
+    portfolio_link: string;
+    x_profile: string;
+  };
   phone_number: string;
   skills: {
     language: string[];
@@ -78,17 +78,25 @@ export type User = {
   generated_resumes: any[]; // Define later
 };
 
+export interface BulletPoint {
+  id: string;
+  text: string;
+}
+
 export interface ResumeItem {
+  id: string;
   title: string;
   subTitle: string;
   location: string;
   timeFrom: string;
   timeTo: string;
-  subPoints: string[];
+  subPoints: BulletPoint[];
 }
 
 export interface ResumeSection {
-  [key: string]: ResumeItem[];
+  id: string;
+  title: string;
+  items: ResumeItem[];
 }
 
 export interface Resume {

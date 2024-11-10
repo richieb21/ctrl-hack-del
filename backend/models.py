@@ -2,6 +2,7 @@ import bcrypt
 from database import users_collection, user_profiles_collection
 from bson import ObjectId
 import datetime
+import uuid
 
 # Hash a password
 def hash_password(password):
@@ -205,24 +206,18 @@ def get_user_by_id(user_id):
     return users_collection.find_one({"_id": ObjectId(user_id)})
 
 def update_profile_experiences(user_id, experiences):
-    if not get_profile_by_user_id(user_id):
-        print("Profile not found")
-        return None
-        
-    formatted_experiences = []
-    for exp in experiences:
-        formatted_exp = {
-            "title": exp.get('title', ''),
-            "position": exp.get('position', ''),
-            "location": exp.get('location', ''),
-            "date": exp.get('date', ''),
-            "points": exp.get('points', [])
-        }
-        formatted_experiences.append(formatted_exp)
-    
-    return user_profiles_collection.update_one(
-        {"user_id": ObjectId(user_id)},
-        {"$set": {"experiences": formatted_experiences}}
+    for experience in experiences:
+        if 'id' not in experience:
+            experience['id'] = str(uuid.uuid4())  # Assign ID if not present
+
+        for point in experience.get('description', []):
+            if isinstance(point, dict) and 'id' not in point:
+                point['id'] = str(uuid.uuid4())
+
+    # Update the profile in the database
+    user_profiles_collection.update_one(
+        {'user_id': user_id},
+        {'$set': {'experiences': experiences}}
     )
 
 def update_profile_extracurriculars(user_id, extracurriculars):

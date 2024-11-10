@@ -1,49 +1,39 @@
 import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { ResumeItem } from "../../constants/types";
+import { ResumeSection } from "../../constants/types";
 import DraggableItem from "./DraggableItem";
 
 interface DraggableSectionProps {
-  sectionTitle: string;
-  items: ResumeItem[];
+  section: ResumeSection;
   index: number;
 }
 
 const DraggableSection: React.FC<DraggableSectionProps> = ({
-  sectionTitle,
-  items,
+  section,
   index,
 }) => {
-  if (!items) return null;
-
-  const sectionId = `section-${index}-${sectionTitle
-    .toLowerCase()
-    .replace(/\s+/g, "-")}`;
+  if (!section.items) return null;
 
   return (
-    <Draggable draggableId={sectionId} index={index}>
+    <Draggable draggableId={section.id} index={index}>
       {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          style={provided.draggableProps.style}
-        >
+        <div ref={provided.innerRef} {...provided.draggableProps}>
           <div className="section-header" {...provided.dragHandleProps}>
-            <h2>{sectionTitle}</h2>
+            <h2>{section.title}</h2>
           </div>
-          <Droppable droppableId={sectionId} type="subsection">
+          <Droppable droppableId={section.id} type="subsection">
             {(provided) => (
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 className="items"
               >
-                {items?.map((item, itemIndex) => (
+                {section.items.map((item, itemIndex) => (
                   <DraggableItem
-                    key={`item-${sectionId}-${itemIndex}`}
+                    key={item.id}
                     item={item}
-                    sectionIndex={index}
-                    itemIndex={itemIndex}
+                    sectionId={section.id}
+                    index={itemIndex}
                   />
                 ))}
                 {provided.placeholder}
