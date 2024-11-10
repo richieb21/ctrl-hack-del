@@ -9,11 +9,6 @@ import Awards from "./Awards";
 import { User } from "../../constants/types";
 
 const Resume = ({ user }: { user: User }) => {
-  const links = [
-    { name: "Github", link: user.github_profile },
-    { name: "LinkedIn", link: user.linkedin_profile },
-  ];
-
   return (
     <div>
       <div className="m-5 p-8 rounded-xl text-center">
@@ -24,7 +19,7 @@ const Resume = ({ user }: { user: User }) => {
           Welcome back to your resume builder
         </p>
       </div>
-      <Link links={links} />
+      <Link links={user.links} />
       <Experience />
       <Education />
       <Skills />
