@@ -52,10 +52,12 @@ def jobRanking(user, job):
             'index': i,
             'score': score,
             'title': exp.get('title', ''),
+            'subtitle' : exp.get('position'),
+            'date' : exp.get('date'),
+            'location' : exp.get('location'),
             'content': exp_text
         })
-    
-    # Process projects
+
     projects = user_object.get('projects', [])
     for i, proj in enumerate(projects):
         proj_text = f"{proj.get('name', '')} {' '.join(proj.get('description', []))}"
@@ -72,15 +74,102 @@ def jobRanking(user, job):
             'index': i,
             'score': score,
             'title': proj.get('name', ''),
+            'link' : proj.get('link', ''),
+            'date': proj.get('date', ''),
             'content': proj_text
         })
     
-    return ranking
+    return sorted(ranking, key=lambda x: x['score'], reverse=True)
 
-def jobMatching(ranking: list):
-    # Sort by score in descending order
-    sorted_ranking = sorted(ranking, key=lambda x: x['score'], reverse=True)
-    return sorted_ranking
+
+# for the params, ranking comes from the above function, and has to be passed in as a userobject or else nono work. you can get it into userform by using the function on line 18
+# returns a resume class, which has a topdf and tolatex function.
+def resumeGenerate(ranking: list, user:User):
+    experience = []
+    projects = []
+
+    N = 6
+    idx = 0
+    while(len(experience) + len(projects) <= N):
+        if(len(experience) == N - 1):
+            if(ranking[idx]['type'] == 'project'):
+                projects.append(Project(
+                    title=ranking[idx]['title'],
+                    subTitle="",
+                    timeFrom=ranking[idx]['date'],
+                    link=ranking[idx]['link'],
+                    points=ranking[idx]['description']
+                ))
+        elif(len(projects) == N - 1):
+            if(ranking[idx]['type'] == 'experience'):
+                experience.append(Experience(
+                    title=ranking[idx]['title'],
+                    subTitle=ranking[idx]['subtitle'],
+                    timeFrom=ranking[idx]['date'],
+                    timeTo=ranking[idx]['date'],
+                    location=ranking[idx]['location']
+                ))
+        else:
+            if(ranking[idx]['type'] == 'experience'):
+                experience.append(Experience(
+                    title=ranking[idx]['title'],
+                    subTitle=ranking[idx]['subtitle'],
+                    timeFrom=ranking[idx]['date'],
+                    timeTo=ranking[idx]['date'],
+                    location=ranking[idx]['location']
+                ))
+            else:
+                projects.append(projects.append(Project(
+                    title=ranking[idx]['title'],
+                    subTitle=ranking[idx]['position'],
+                    timeFrom=ranking[idx]['date'],
+                    link=ranking[idx]['link'],
+                    points=ranking[idx]['description']
+                )))
+        idx += 1
+
+    education = []
+    for ed in user.get('education', []):
+        education.append(School(
+            title = ed['schoolname'], subTitle = ed['program'], 
+            timeFrom = ed['start'],
+            timeTo = ed['end'],
+            location=""
+        ))
+    extracurricular = []
+    for ec in user.get('extra_curricular', []):
+        extracurricular.append(Extracurricular(
+            title=ec['title'],
+            subTitle=ec['position'],
+            timeFrom='',
+            timeTo='',
+            subPoints=ec.get('points', [])
+        ))
+    skills = Skills(
+        languages=user.get('skills', {})['language'],
+        frameworks=user.get('skills', {})['frameworks'],
+        devTools=user.get('skills', {})['language'],
+        other=user.get('skills', {})['other']
+    )
+
+    education_section = EducationSection(education)
+    extracurricular_section = ExtracurricularSection(extracurricular)
+    project_section = ProjectsSection(projects)
+    experience_section = ExperiencesSection(experience)
+    skills_section = SkillsSection([skills])
+
+    resume = Resume(
+        name = user.get('name', ""),
+        email= user.get('email', ""),
+        linkedin = user.get('linkedin', ""),
+        phone = user.get('phone', ""),
+        github = user.get('github', ""),
+        sections=[education_section, extracurricular_section, project_section, experience_section, skills_section]
+    )
+
+    return resume
+
+
 
 # # Test the function
 # if __name__ == "__main__":

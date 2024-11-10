@@ -66,7 +66,6 @@ class School(Entry):
     def __init__(self, title, subTitle, timeFrom, timeTo, location):
         super().__init__(title, subTitle, timeFrom, timeTo, location)
 
-
 class Extracurricular(Entry):
     def __init__(self, title, subTitle, timeFrom, timeTo, location, subPoints=[]):
         super().__init__(title, subTitle, timeFrom, timeTo, location, subPoints)
@@ -101,7 +100,6 @@ class Project(Entry):
             ret += "}\n\t\t\t\\resumeItem{".join(subPoints)
             ret += "}\n\t\t\\resumeItemListEnd"
         return ret
-
 
 class Experience(Entry):
     def __init__(self, title, subTitle, timeFrom, timeTo, location, points):
