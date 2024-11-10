@@ -39,11 +39,19 @@ Acceleratr is a smart resume-building tool that instantly customizes your resume
 
 ## Installation
 
-[Add installation instructions here]
+Make sure to install latex on your system before running the backend.
+
+For frontend, run `npm install` and `npm start`.
+
+For backend, run `pip install -r requirements.txt` and `flask run`.
 
 ## Usage
 
-[Add usage instructions here]
+1. Create an account
+2. Complete onboarding
+3. Input target job posting
+4. Tailor your resume
+5. Preview/Download your resume
 
 ## Future Development
 
