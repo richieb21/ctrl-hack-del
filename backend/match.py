@@ -91,68 +91,58 @@ def resumeGenerate(ranking: list, user:User):
     N = 6
     idx = 0
     while len(experience) + len(projects) < N and idx < len(ranking):
-        if len(experience) == N - 1 and ranking[idx]['type'] == 'project':
-            if(ranking[idx]['type'] == 'project'):
-                projects.append(Project(
-                    title=ranking[idx]['title'],
-                    subTitle=ranking[idx]['position'],
-                    timeFrom=ranking[idx]['date'],
-                    timeTo=ranking[idx]['date'],
-                    link=ranking[idx]['link'],
-                    points=ranking[idx]['description']
-                ))
-        elif len(projects) == N - 1 and ranking[idx]['type'] == 'experience':
-            if(ranking[idx]['type'] == 'experience'):
-                experience.append(Experience(
-                    title=ranking[idx]['title'],
-                    subTitle=ranking[idx]['subtitle'],
-                    timeFrom=ranking[idx]['date'],
-                    timeTo=ranking[idx]['date'],
-                    location=ranking[idx]['location']
-                ))
-        else:
-            if ranking[idx]['type'] == 'experience':
-                experience.append(Experience(
-                    title=ranking[idx]['title'],
-                    subTitle=ranking[idx]['subtitle'],
-                    timeFrom=ranking[idx]['date'],
-                    timeTo=ranking[idx]['date'],
-                    location=ranking[idx]['location']
-                ))
-            elif ranking[idx]['type'] == 'project':
-                projects.append(projects.append(Project(
-                    title=ranking[idx]['title'],
-                    subTitle=ranking[idx]['position'],
-                    timeFrom=ranking[idx]['date'],
-                    timeTo=ranking[idx]['date'],
-                    link=ranking[idx]['link'],
-                    points=ranking[idx]['description']
-                )))
+        # Get the original experience/project from user data using the index
+        if ranking[idx]['type'] == 'experience':
+            # Find the original experience data from user's experiences
+            original_exp = user.experiences[ranking[idx]['index']]
+            experience.append(Experience(
+                title=ranking[idx].get('title', '') or '',
+                subTitle=ranking[idx].get('subtitle', '') or '',
+                timeFrom=original_exp.get('date', '') or '',
+                timeTo=original_exp.get('date', '') or '',
+                location=original_exp.get('location', '') or '',
+                points=original_exp.get('points', [])  # Get points from original data
+            ))
+        elif ranking[idx]['type'] == 'project':
+            # Find the original project data
+            original_proj = user.projects[ranking[idx]['index']]
+            projects.append(Project(
+                title=ranking[idx].get('title', '') or '',
+                subTitle=ranking[idx].get('position', '') or '',
+                timeFrom=original_proj.get('date', '') or '',
+                timeTo=original_proj.get('date', '') or '',
+                link=original_proj.get('link', '') or '',
+                points=original_proj.get('description', [])  # Get description from original data
+            ))
         idx += 1
 
     education = []
-    for ed in user.get('education', []):
+    for ed in user.education:
         education.append(School(
-            title = ed['schoolname'], subTitle = ed['program'], 
-            timeFrom = ed['start'],
-            timeTo = ed['end'],
-            location=""
+            title=ed.get('schoolname', '') or '',
+            subTitle=ed.get('program', '') or '',
+            timeFrom=ed.get('start', '') or '',
+            timeTo=ed.get('end', '') or '',
+            location=ed.get('location', '') or ''
         ))
+
     extracurricular = []
-    for ec in user.get('extra_curricular', []):
-        extracurricular.append(Extracurricular(
-            title=ec['title'],
-            subTitle=ec['position'],
-            timeFrom='',
-            timeTo='',
-            location='',
-            subPoints=ec.get('points', [])
-        ))
+    if hasattr(user, 'extra_curricular'):
+        for ec in user.extra_curricular:
+            extracurricular.append(Extracurricular(
+                title=ec.get('title', '') or '',
+                subTitle=ec.get('position', '') or '',
+                timeFrom=ec.get('date', '') or '',
+                timeTo=ec.get('date', '') or '',
+                location=ec.get('location', '') or '',
+                subPoints=ec.get('points', []) or []
+            ))
+
     skills = Skills(
-        languages=user.get('skills', {})['language'],
-        frameworks=user.get('skills', {})['frameworks'],
-        devTools=user.get('skills', {})['language'],
-        other=user.get('skills', {})['other']
+        languages=user.skills.get('language', []),
+        frameworks=user.skills.get('framework', []),
+        devTools=user.skills.get('tool', []),
+        other=user.skills.get('other', [])
     )
 
     education_section = EducationSection(education)
@@ -162,83 +152,128 @@ def resumeGenerate(ranking: list, user:User):
     skills_section = SkillsSection([skills])
 
     resume = Resume(
-        name = user.get('name', ""),
-        email= user.get('email', ""),
-        linkedin = user.get('linkedin', ""),
-        phone = user.get('phone', ""),
-        github = user.get('github', ""),
+        name=user.username or '',
+        email=user.email or '',
+        linkedin=user.linkedin_profile or '',
+        phone=user.phone_number or '',
+        github=user.github_profile or '',
         sections=[education_section, extracurricular_section, project_section, experience_section, skills_section]
     )
 
     return resume
 
-
-
-# # Test the function
-# if __name__ == "__main__":
-#     test_user_id = "6730465a20ef67f486a49f98"
-#     test_job = """Build the future of the AI Data Cloud. Join the Snowflake team.
-
-# Snowflake started with a clear vision: develop a cloud data platform that is effective, affordable, and accessible to all data users. Snowflake developed an innovative new product with a built-for-the-cloud architecture that combines the power of data warehousing, the flexibility of big data platforms, and the elasticity of the cloud at a fraction of the cost of traditional solutions. We are now a global, world-class organization with offices in more than a dozen countries and serving many more.
-
-# We’re looking for dedicated students who share our passion for ground-breaking technology and want to create a lasting future for you and Snowflake.
-
-# WHAT WE OFFER:
-
-# Paid, full-time internships in the heart of the software industry
-# Post-internship career opportunities (full-time and/or additional internships)
-# Exposure to a fast-paced, fun and inclusive culture
-# A chance to work with world-class experts on challenging projects
-# Opportunity to provide meaningful contributions to a real system used by customers
-# High level of access to supervisors (manager and mentor), detailed direction without micromanagement, feedback throughout your internship, and a final evaluation
-# Stuff that matters: treated as a member of the Snowflake team, included in company meetings/activities, flexible hours, casual dress code, accommodations to work from home, swag and much more
-# When return to office in effect, catered lunches, access to gaming consoles, recreational games, happy hours, company outings, and more
-
-
-# WHAT WE EXPECT:
-
-# Desired class level: 3rd/4th year Undergraduates, Masters, or PhD
-# Desired majors: Computer Science, Computer Engineering, Software Engineering, or related field
-# Required coursework: algorithms, data structures, and operating systems
-# Recommended coursework: cloud computing, database systems, distributed systems, and real-time programming
-# Bonus experience: working experience, research or publications in databases or distributed systems, and contributions to open source 
-# When: Summer 2025 (April - September 2025) 
-# Duration: 12 week minimum, 12-16 weeks recommended
-# Excellent programming skills in C++ or Java 
-# Knowledge of data structures and algorithms
-# Strong problem solving and ability to learn quickly in a dynamic environment
-# Experience with working as a part of a team
-# Dedication and passion for technology
-
-
-# WHAT YOU WILL LEARN/GAIN:
-
-# How to build enterprise grade, reliable, and trustworthy software/services
-# Exposure to SQL or other database technologies
-# Understanding of database internals, large-scale data processing, transaction processing, distributed systems, and data warehouse design
-# Implementation, testing of features in query compilation, compiler design, query execution
-# Experience working with cloud infrastructure, AWS, Azure, and/or Google Cloud in particular
-# Learning about cutting edge database technology and research
-
-
-# POSSIBLE TEAMS/WORK FOCUS AREAS:
-
-# Data Applications Infrastructure, Data Marketplace, Data Privacy, Data Sharing 
-# High performance large-scale data processing
-# Large-scale distributed systems
-# Software-as-a-Service platform
-# Software frameworks for stability and performance testing
-
-
-# Every Snowflake employee is expected to follow the company’s confidentiality and security standards for handling sensitive data. Snowflake employees must abide by the company’s data security plan as an essential part of their duties. It is every employee's duty to keep customer information secure and confidential.
-
-# Snowflake is growing fast, and we’re scaling our team to help enable and accelerate our growth. We are looking for people who share our values, challenge ordinary thinking, and push the pace of innovation while building a future for themselves and Snowflake.."""  # Your job description
-#     rankings = jobRanking(test_user_id, test_job)
-#     matched_rankings = jobMatching(rankings)
+def jobMatching(rankings):
+    if not rankings:
+        return []
     
-#     print("\nTop Matches:")
-#     for rank in matched_rankings[:5]:  # Show top 5 matches
-#         print(f"\nType: {rank['type']}")
-#         print(f"Title: {rank['title']}")
-#         print(f"Score: {rank['score']:.2f}")
+    # Find the maximum score for normalization
+    max_score = max(rank['score'] for rank in rankings)
+    
+    # Normalize scores to be between 0 and 1 if there are non-zero scores
+    if max_score > 0:
+        for rank in rankings:
+            rank['score'] = (rank['score'] / max_score) * 100  # Convert to percentage
+    
+    # Filter out entries with very low relevance (optional)
+    filtered_rankings = [rank for rank in rankings if rank['score'] >= 10]  # 10% threshold
+    
+    return filtered_rankings
+
+def get_user_object(user_id):
+    # Get user and profile data
+    user_data = users_collection.find_one({"_id": ObjectId(user_id)})
+    profile_data = user_profiles_collection.find_one({"user_id": ObjectId(user_id)})
+    
+    if not user_data or not profile_data:
+        return None
+        
+    # Create User object using the from_mongo class method
+    user = User.from_mongo(user_data, profile_data)
+    return user
+
+# Test the function
+if __name__ == "__main__":
+    test_user_id = "67308e814e47c133160a54f1"
+    test_job = """Build the future of the AI Data Cloud. Join the Snowflake team.
+
+Snowflake started with a clear vision: develop a cloud data platform that is effective, affordable, and accessible to all data users. Snowflake developed an innovative new product with a built-for-the-cloud architecture that combines the power of data warehousing, the flexibility of big data platforms, and the elasticity of the cloud at a fraction of the cost of traditional solutions. We are now a global, world-class organization with offices in more than a dozen countries and serving many more.
+
+We’re looking for dedicated students who share our passion for ground-breaking technology and want to create a lasting future for you and Snowflake.
+
+WHAT WE OFFER:
+
+Paid, full-time internships in the heart of the software industry
+Post-internship career opportunities (full-time and/or additional internships)
+Exposure to a fast-paced, fun and inclusive culture
+A chance to work with world-class experts on challenging projects
+Opportunity to provide meaningful contributions to a real system used by customers
+High level of access to supervisors (manager and mentor), detailed direction without micromanagement, feedback throughout your internship, and a final evaluation
+Stuff that matters: treated as a member of the Snowflake team, included in company meetings/activities, flexible hours, casual dress code, accommodations to work from home, swag and much more
+When return to office in effect, catered lunches, access to gaming consoles, recreational games, happy hours, company outings, and more
+
+
+WHAT WE EXPECT:
+
+Desired class level: 3rd/4th year Undergraduates, Masters, or PhD
+Desired majors: Computer Science, Computer Engineering, Software Engineering, or related field
+Required coursework: algorithms, data structures, and operating systems
+Recommended coursework: cloud computing, database systems, distributed systems, and real-time programming
+Bonus experience: working experience, research or publications in databases or distributed systems, and contributions to open source 
+When: Summer 2025 (April - September 2025) 
+Duration: 12 week minimum, 12-16 weeks recommended
+Excellent programming skills in C++ or Java 
+Knowledge of data structures and algorithms
+Strong problem solving and ability to learn quickly in a dynamic environment
+Experience with working as a part of a team
+Dedication and passion for technology
+
+
+WHAT YOU WILL LEARN/GAIN:
+
+How to build enterprise grade, reliable, and trustworthy software/services
+Exposure to SQL or other database technologies
+Understanding of database internals, large-scale data processing, transaction processing, distributed systems, and data warehouse design
+Implementation, testing of features in query compilation, compiler design, query execution
+Experience working with cloud infrastructure, AWS, Azure, and/or Google Cloud in particular
+Learning about cutting edge database technology and research
+
+
+POSSIBLE TEAMS/WORK FOCUS AREAS:
+
+Data Applications Infrastructure, Data Marketplace, Data Privacy, Data Sharing 
+High performance large-scale data processing
+Large-scale distributed systems
+Software-as-a-Service platform
+Software frameworks for stability and performance testing
+
+
+Every Snowflake employee is expected to follow the company’s confidentiality and security standards for handling sensitive data. Snowflake employees must abide by the company’s data security plan as an essential part of their duties. It is every employee's duty to keep customer information secure and confidential.
+
+Snowflake is growing fast, and we’re scaling our team to help enable and accelerate our growth. We are looking for people who share our values, challenge ordinary thinking, and push the pace of innovation while building a future for themselves and Snowflake.."""  # Your job description
+    rankings = jobRanking(test_user_id, test_job)
+    matched_rankings = jobMatching(rankings)
+    
+    print("\nTop Matches:")
+    for rank in matched_rankings[:5]:  # Show top 5 matches
+        print(f"\nType: {rank['type']}")
+        print(f"Title: {rank['title']}")
+        print(f"Score: {rank['score']:.2f}")
+
+    user_data = get_user_object(test_user_id)
+
+    # 3. Generate the resume
+    resume = resumeGenerate(matched_rankings, user_data)
+    print(resume.toLatex())
+
+    # 2. Get user object
+    user = get_user_object(test_user_id)
+    if user:
+        # 3. Generate resume
+        resume = resumeGenerate(matched_rankings, user)
+        
+        # 4. Generate output
+        latex_content = resume.toLatex()
+        print(latex_content)
+        # Or PDF
+        # resume.toPDF("output.pdf")
 

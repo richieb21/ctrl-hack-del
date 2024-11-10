@@ -5,6 +5,7 @@ import {
   faPenToSquare,
   faSignOut,
   faCode,
+  faBriefcase,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/logos/ctrl_hack_del_logo_white.png";
@@ -26,6 +27,9 @@ const NavBar = () => {
     } else if (location.pathname === "/latex") {
       setActive("latex");
       setSliderPosition(50);
+    } else if (location.pathname === "/jobmatch") {
+      setActive("jobmatch");
+      setSliderPosition(75);
     }
   }, [location.pathname, sliderPosition]);
 
@@ -48,7 +52,7 @@ const NavBar = () => {
           className="w-12 h-12 object-contain"
         />
       </div>
-      <div className="w-16 h-52 rounded-lg bg-blue-100 flex flex-col items-center justify-center p-3 fixed bottom-m my-5 gap-2">
+      <div className="w-16 h-64 rounded-lg bg-blue-100 flex flex-col items-center justify-center p-3 fixed bottom-m my-5 gap-2">
         <div
           className={`${
             active === "home" ? "bg-m-blue" : "hover:bg-gray-200"
@@ -89,6 +93,20 @@ const NavBar = () => {
             className="pt-2 transition-transform duration-200 hover:scale-110"
           >
             <FontAwesomeIcon icon={faCode} />
+          </button>
+        </div>
+        <div
+          className={`${
+            active === "jobmatch" ? "bg-m-blue" : "hover:bg-gray-200"
+          } rounded-lg px-3 pb-2 mx-2 flex items-center justify-center transition-all duration-200`}
+        >
+          <button
+            onClick={() => {
+              navigate("/jobmatch");
+            }}
+            className="pt-2 transition-transform duration-200 hover:scale-110"
+          >
+            <FontAwesomeIcon icon={faBriefcase} />
           </button>
         </div>
         <div

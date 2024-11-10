@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Onboarding from "./components/Onboarding";
 import Tailor from "./components/Tailor";
 import LatexDisplay from "./components/Latex";
+import JobMatch from "./components/JobMatch";
 import { ResumeProvider } from "./context/ResumeContext";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/tailor" element={<Tailor />} />
           <Route path="/latex" element={<LatexDisplay />} />
+          <Route path="/jobmatch" element={<JobMatch />} />
         </Routes>
       </Router>
     </ResumeProvider>
