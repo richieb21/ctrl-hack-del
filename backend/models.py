@@ -37,6 +37,7 @@ def find_user_by_id(user_id):
 def create_profile(user_id):
     profile = {
         "user_id": ObjectId(user_id),
+        "name": "",
         "linkedin_profile": "",
         "github_profile": "",
         "phone_number": "",
@@ -132,3 +133,12 @@ def update_profile_links(user_id, links):
             {"user_id": ObjectId(user_id)},
             {"$set": update_fields}
         )
+    
+def update_profile_name(user_id, name):
+    user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"name": name}}
+    )
+    
+def get_user_by_id(user_id):
+    return users_collection.find_one({"_id": ObjectId(user_id)})

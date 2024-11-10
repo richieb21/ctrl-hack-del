@@ -5,9 +5,15 @@ interface LinksStepProps {
   links: Links;
   setLinks: (links: Links) => void;
   onNext: () => void;
+  onBack: () => void;
 }
 
-export const LinksStep = ({ links, setLinks, onNext }: LinksStepProps) => {
+export const LinksStep = ({
+  links,
+  setLinks,
+  onNext,
+  onBack,
+}: LinksStepProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     api.updateLinks(links).then(() => {
@@ -80,12 +86,21 @@ export const LinksStep = ({ links, setLinks, onNext }: LinksStepProps) => {
           placeholder="yourname@email.com"
         />
       </div>
-      <button
-        type="submit"
-        className="w-full px-8 py-3 text-lg font-semibold text-white bg-[#2C74B3] hover:bg-[#205295] rounded-full"
-      >
-        Next
-      </button>
+      <div className="flex justify-between mt-6">
+        <button
+          type="button"
+          onClick={onBack}
+          className="px-6 py-2 text-[#2C74B3] hover:underline"
+        >
+          Back
+        </button>
+        <button
+          type="submit"
+          className="w-full px-8 py-3 text-lg font-semibold text-white bg-[#2C74B3] hover:bg-[#205295] rounded-full"
+        >
+          Next
+        </button>
+      </div>
     </form>
   );
 };

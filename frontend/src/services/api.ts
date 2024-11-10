@@ -124,4 +124,50 @@ export const api = {
       throw error;
     }
   },
+
+  async getUser() {
+    try {
+      const response = await fetch(`${API_URL}/user/profile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Get user failed");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Get user error:", error);
+      throw error;
+    }
+  },
+
+  async updateName(name: string) {
+    try {
+      const response = await fetch(`${API_URL}/user/name`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ name }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update name failed");
+      }
+    } catch (error) {
+      console.error("Update name error:", error);
+      throw error;
+    }
+  },
 };

@@ -20,3 +20,24 @@ export type Project = {
   description: string[];
   link?: string;
 };
+
+export type User = {
+  name: string;
+  linkedin_profile: string;
+  github_profile: string;
+  phone_number: string;
+  skills: {
+    language: string[];
+    framework: string[];
+    tool: string[];
+    other: string[];
+  };
+  experiences: {
+    job_title: string;
+    date_range: string;
+    job_description: string;
+    skills: string[];
+  }[];
+  projects: Project[];
+  generated_resumes: any[]; // Define later
+};
