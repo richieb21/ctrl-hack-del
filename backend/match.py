@@ -81,6 +81,8 @@ def jobRanking(user, job):
     
     return sorted(ranking, key=lambda x: x['score'], reverse=True)
 
+
+# for the params, ranking comes from the above function, and has to be passed in as a userobject or else nono work. you can get it into userform by using the function on line 18
 def resumeGenerate(ranking: list, user:User):
     experience = []
     projects = []
