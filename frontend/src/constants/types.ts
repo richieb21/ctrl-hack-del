@@ -83,6 +83,13 @@ export type User = {
 	date: string;
 	points: string[];
   }[];
+  extra_curricular: {
+	title: string;
+	location: string;
+	position: string;
+	date: string;
+	points: string[];
+  }[];
   projects: Project[];
   generated_resumes: any[]; // Define later
 };

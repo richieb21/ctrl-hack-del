@@ -24,7 +24,7 @@ const Resume = ({ user }: { user: User }) => {
       <Education education={user.education}/>
       <Skills />
       <Projects projects={user.projects} />
-      <Extracurriculars />
+      <Extracurriculars extracurriculars={user.extra_curricular}/>
       <Awards />
     </div>
   );
