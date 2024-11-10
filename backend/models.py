@@ -37,13 +37,13 @@ def find_user_by_id(user_id):
 def create_profile(user_id):
     profile = {
         "user_id": ObjectId(user_id),
-        "linkedin_profile": linkedin,
-        "github_profile": github,
-        "phone_number": phone_number,
+        "linkedin_profile": "",
+        "github_profile": "",
+        "phone_number": "",
         "skills": {
             "language": [],
-            "frameworks": [],
-            "dev-tools": [],
+            "framework": [],
+            "tool": [],
             "other": []
         },
         "experiences": [],
@@ -88,27 +88,17 @@ def add_experience(user_id, job_title, date_range, job_description, skills):
 
     return new_experience
 
-def update_profile_skills(user_id, new_languages = [], new_frameworks = [], new_dev_tools = [], new_other_skills = []):
+def update_profile_skills(user_id, categorized_skills):
     profile = get_profile_by_user_id(user_id)
     if not profile:
         print("Profile not found.")
         return None
 
-    languages = set(profile["skills"].get("language", [])).update(new_languages)
-    frameworks = set(profile["skills"].get("frameworks", [])).update(new_frameworks)
-    dev_tools = set(profile["skills"].get("dev-tools", [])).update(new_dev_tools)
-    other = set(profile["skills"].get("other", [])).update(new_other_skills)
+    # Update each category separately
+    for category in ["language", "framework", "tool", "other"]:
+        user_profiles_collection.update_one(
+            {"user_id": ObjectId(user_id)},
+            {"$set": {f"skills.{category}": categorized_skills.get(category, [])}}
+        )
 
-    updated_skills = {
-        "language": list(languages),
-        "frameworks": list(frameworks),
-        "dev-tools": list(dev_tools),
-        "other": list(other)
-    }
-
-    user_profiles_collection.update_one(
-        {"user_id": ObjectId(user_id)},
-        {"$set": {"skills": updated_skills}}
-    )
-
-    return updated_skills
+    return categorized_skills

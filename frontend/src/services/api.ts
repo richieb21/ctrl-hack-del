@@ -8,16 +8,17 @@ export const api = {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify({ username, email, password }),
       });
+
+      const data = await response.json();
 
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message || "Registration failed");
       }
 
-      return response.json();
+      return data;
     } catch (error) {
       console.error("Registration error:", error);
       if (error instanceof TypeError && error.message === "Failed to fetch") {
@@ -66,6 +67,27 @@ export const api = {
       });
     } catch (error) {
       console.error("Update profile error:", error);
+      throw error;
+    }
+  },
+
+  async updateSkills(skills: Array<{ name: string; category: string }>) {
+    try {
+      const response = await fetch(`${API_URL}/user/skills`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ skills }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update skills failed");
+      }
+    } catch (error) {
+      console.error("Update skills error:", error);
       throw error;
     }
   },

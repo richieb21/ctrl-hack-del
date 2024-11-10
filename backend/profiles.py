@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
-from models import create_profile, get_profile_by_user_id, update_profile, add_skills
+from models import create_profile, get_profile_by_user_id, update_profile, update_profile_skills
 import jwt
 from functools import wraps
 from dotenv import load_dotenv
 import os
+from bson.objectid import ObjectId
 
 load_dotenv()
 
@@ -67,5 +68,34 @@ def update_skills(user_id):
     data = request.get_json()
     if not data.get('skills'):
         return jsonify({'message': 'Skills are required'}), 400
-    add_skills(user_id, data['skills'])
-    return jsonify({'message': 'Skills updated successfully'})
+        
+    # Initialize categorized skills
+    categorized_skills = {
+        "language": [],
+        "framework": [],
+        "tool": [],
+        "other": []
+    }
+    
+    # Sort skills into categories
+    for skill in data['skills']:
+        category = skill.get('category', 'other').lower()
+        name = skill.get('name')
+        
+        if category in categorized_skills:
+            categorized_skills[category].append(name)
+        else:
+            categorized_skills['other'].append(name)
+
+    # Update the profile with categorized skills
+    try:
+        profile = get_profile_by_user_id(user_id)
+        if not profile:
+            return jsonify({'message': 'Profile not found'}), 404
+            
+        update_profile_skills(user_id, categorized_skills)
+    
+        return jsonify({'message': 'Skills updated successfully'})
+    except Exception as e:
+        print(f"Error updating skills: {str(e)}")
+        return jsonify({'message': 'Failed to update skills'}), 500
