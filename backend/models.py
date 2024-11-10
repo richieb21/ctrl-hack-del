@@ -203,3 +203,86 @@ def update_profile_name(user_id, name):
     
 def get_user_by_id(user_id):
     return users_collection.find_one({"_id": ObjectId(user_id)})
+
+def update_profile_experiences(user_id, experiences):
+    if not get_profile_by_user_id(user_id):
+        print("Profile not found")
+        return None
+        
+    formatted_experiences = []
+    for exp in experiences:
+        formatted_exp = {
+            "title": exp.get('title', ''),
+            "position": exp.get('position', ''),
+            "location": exp.get('location', ''),
+            "date": exp.get('date', ''),
+            "points": exp.get('points', [])
+        }
+        formatted_experiences.append(formatted_exp)
+    
+    return user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"experiences": formatted_experiences}}
+    )
+
+def update_profile_extracurriculars(user_id, extracurriculars):
+    if not get_profile_by_user_id(user_id):
+        print("Profile not found")
+        return None
+        
+    formatted_extracurriculars = []
+    for extra in extracurriculars:
+        formatted_extra = {
+            "title": extra.get('title', ''),
+            "position": extra.get('position', ''),
+            "location": extra.get('location', ''),
+            "date": extra.get('date', ''),
+            "points": extra.get('points', [])
+        }
+        formatted_extracurriculars.append(formatted_extra)
+    
+    return user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"extra_curricular": formatted_extracurriculars}}
+    )
+
+def update_profile_awards(user_id, awards):
+    if not get_profile_by_user_id(user_id):
+        print("Profile not found")
+        return None
+        
+    formatted_awards = []
+    for award in awards:
+        formatted_award = {
+            "title": award.get('title', ''),
+            "date": award.get('date', ''),
+            "description": award.get('description', '')
+        }
+        formatted_awards.append(formatted_award)
+    
+    return user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"awards": formatted_awards}}
+    )
+
+def update_profile_education(user_id, education):
+    if not get_profile_by_user_id(user_id):
+        print("Profile not found")
+        return None
+        
+    formatted_education = []
+    for edu in education:
+        formatted_edu = {
+            "schoolname": edu.get('schoolname', ''),
+            "level": edu.get('level', ''),
+            "program": edu.get('program', ''),
+            "start": edu.get('start', ''),
+            "end": edu.get('end', ''),
+            "gpa": edu.get('gpa', '')
+        }
+        formatted_education.append(formatted_edu)
+    
+    return user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"education": formatted_education}}
+    )

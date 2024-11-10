@@ -21,6 +21,37 @@ export type Project = {
   link?: string;
 };
 
+export type ExtraCurricular = {
+  title: string;
+  location: string;
+  position: string;
+  date: string;
+  points: string[];
+};
+
+export type Award = {
+  title: string;
+  date: string;
+  description: string;
+};
+
+export type Experience = {
+  title: string;
+  position: string;
+  location: string;
+  date: string;
+  points: string[];
+};
+
+export type Education = {
+  schoolname: string;
+  level: string;
+  program: string;
+  start: string;
+  end: string;
+  gpa: string;
+};
+
 export type User = {
   name: string;
   linkedin_profile: string;

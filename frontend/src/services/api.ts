@@ -1,4 +1,11 @@
-import { Links, Project } from "../constants/types";
+import {
+  Award,
+  Experience,
+  ExtraCurricular,
+  Links,
+  Project,
+  Education,
+} from "../constants/types";
 
 const API_URL = "http://127.0.0.1:5000";
 
@@ -167,6 +174,90 @@ export const api = {
       }
     } catch (error) {
       console.error("Update name error:", error);
+      throw error;
+    }
+  },
+
+  async updateExperiences(experiences: Experience[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/experiences`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ experiences }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update experiences failed");
+      }
+    } catch (error) {
+      console.error("Update experiences error:", error);
+      throw error;
+    }
+  },
+
+  async updateExtracurriculars(extracurriculars: ExtraCurricular[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/extracurriculars`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ extracurriculars }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update extracurriculars failed");
+      }
+    } catch (error) {
+      console.error("Update extracurriculars error:", error);
+      throw error;
+    }
+  },
+
+  async updateAwards(awards: Award[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/awards`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ awards }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update awards failed");
+      }
+    } catch (error) {
+      console.error("Update awards error:", error);
+      throw error;
+    }
+  },
+
+  async updateEducation(education: Education[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/education`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ education }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update education failed");
+      }
+    } catch (error) {
+      console.error("Update education error:", error);
       throw error;
     }
   },
