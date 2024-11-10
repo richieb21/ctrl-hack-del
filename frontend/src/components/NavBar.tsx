@@ -7,6 +7,7 @@ import {
   faCode,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/logos/ctrl_hack_del_logo_white.png";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -33,7 +34,11 @@ const NavBar = () => {
   return (
     <div className="flex flex-col items-center mx-10 my-5">
       <div className="w-16 h-16 rounded-lg bg-blue-500 text-white fixed flex text-center items-center justify-center">
-        <p>L</p>
+        <img
+          src={logo}
+          alt="Ctrl Hack Del Logo"
+          className="w-12 h-12 object-contain"
+        />
       </div>
       <div className="w-16 h-52 rounded-lg bg-blue-100 flex flex-col items-center justify-center p-3 fixed bottom-m my-5 gap-2">
         <div
