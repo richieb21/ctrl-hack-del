@@ -33,7 +33,7 @@ Acceleratr is a smart resume-building tool that instantly customizes your resume
 - **Frontend**: React, Tailwind CSS
 - **Backend**: Flask (Python)
 - **Database**: MongoDB
-- **Authentication**: OAuth
+- **Authentication**: JWT, Bcrypt
 - **PDF Generation**: LaTeX
 - **Natural Language Processing**: RAKE, Cosine Similarity
 
