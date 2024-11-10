@@ -88,7 +88,7 @@ def add_experience(user_id, job_title, date_range, job_description, skills):
 
     return new_experience
 
-def update_profile_skills(user_id, new_languages, new_frameworks, new_dev_tools, new_other_skills):
+def update_profile_skills(user_id, new_languages = [], new_frameworks = [], new_dev_tools = [], new_other_skills = []):
     profile = get_profile_by_user_id(user_id)
     if not profile:
         print("Profile not found.")

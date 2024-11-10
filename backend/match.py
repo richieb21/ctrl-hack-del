@@ -22,3 +22,4 @@ def jobMatch(user, job):
 
     job_key_words = extractPhrases(job)
     
+    
