@@ -16,8 +16,12 @@ const DraggableSection: React.FC<DraggableSectionProps> = ({
 }) => {
   if (!items) return null;
 
+  const sectionId = `section-${index}-${sectionTitle
+    .toLowerCase()
+    .replace(/\s+/g, "-")}`;
+
   return (
-    <Draggable draggableId={`section-${index}`} index={index}>
+    <Draggable draggableId={sectionId} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
@@ -27,7 +31,7 @@ const DraggableSection: React.FC<DraggableSectionProps> = ({
           <div className="section-header" {...provided.dragHandleProps}>
             <h2>{sectionTitle}</h2>
           </div>
-          <Droppable droppableId={`section-${index}`} type="subsection">
+          <Droppable droppableId={sectionId} type="subsection">
             {(provided) => (
               <div
                 ref={provided.innerRef}
@@ -36,7 +40,7 @@ const DraggableSection: React.FC<DraggableSectionProps> = ({
               >
                 {items?.map((item, itemIndex) => (
                   <DraggableItem
-                    key={`${sectionTitle}-${itemIndex}`}
+                    key={`item-${sectionId}-${itemIndex}`}
                     item={item}
                     sectionIndex={index}
                     itemIndex={itemIndex}

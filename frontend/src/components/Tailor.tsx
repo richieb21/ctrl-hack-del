@@ -53,12 +53,8 @@ const Tailor: React.FC = () => {
       newResume.sections.splice(destination.index, 0, removed);
     } else if (type === "subsection") {
       console.log("Moving subsection");
-      const sourceSectionIndex = parseInt(
-        source.droppableId.replace("section-", "")
-      );
-      const destSectionIndex = parseInt(
-        destination.droppableId.replace("section-", "")
-      );
+      const sourceSectionIndex = parseInt(source.droppableId.split("-")[1]);
+      const destSectionIndex = parseInt(destination.droppableId.split("-")[1]);
 
       const sourceSectionKey = Object.keys(
         newResume.sections[sourceSectionIndex]

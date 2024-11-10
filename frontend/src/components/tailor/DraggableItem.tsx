@@ -15,11 +15,10 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
 }) => {
   if (!item || !item.subPoints) return null;
 
+  const itemId = `item-${sectionIndex}-${itemIndex}`;
+
   return (
-    <Draggable
-      draggableId={`item-${sectionIndex}-${itemIndex}`}
-      index={itemIndex}
-    >
+    <Draggable draggableId={itemId} index={itemIndex}>
       {(provided) => (
         <div
           ref={provided.innerRef}
