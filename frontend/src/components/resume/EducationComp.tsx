@@ -107,7 +107,6 @@ const EducationComp = ({ education }: { education: {schoolname: string, level: s
           {edu.map((edu, i) => (
             <div key={i} className="relative group">
               <div className="flex items-start gap-4">
-                logo
                 <div className="flex-grow">
                   <h3 className="text-lg font-semibold text-gray-800">
                     {edu.schoolname}
