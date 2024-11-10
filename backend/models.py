@@ -118,15 +118,16 @@ def update_profile(user_id, update_data):
     )
 
 # Add a job experience to a profile
-def add_experience(user_id, job_title, date_range, job_description, skills):
+def add_experience(user_id, title, date, location, points, position):
     if not get_profile_by_user_id(user_id):
         print("Profile not found")
     
     new_experience = {
-        "job_title": job_title,
-        "date_range": date_range,
-        "job_description": job_description,
-        "skills": skills
+        "title": title,
+        "date": date,
+        "location": location,
+        "position": position,
+        "points": points
     }
 
     user_profiles_collection.update_one(

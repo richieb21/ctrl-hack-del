@@ -68,11 +68,20 @@ export type User = {
     tool: string[];
     other: string[];
   };
+  education: {
+	schoolname: string;
+	level: string; 
+	program: string;
+	start: string;
+	end: string;
+	gpa: string;
+  }[];
   experiences: {
-    job_title: string;
-    date_range: string;
-    job_description: string;
-    skills: string[];
+    title: string;
+	position: string;
+	location: string;
+	date: string;
+	points: string[];
   }[];
   projects: Project[];
   generated_resumes: any[]; // Define later
