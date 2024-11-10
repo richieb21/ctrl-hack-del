@@ -4,6 +4,7 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import Home from "./components/Home";
 import Onboarding from "./components/Onboarding";
+import Tailor from "./components/Tailor";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/home" element={<Home />} />
+		<Route path="/tailor" element={<Tailor />} />
       </Routes>
     </Router>
   );

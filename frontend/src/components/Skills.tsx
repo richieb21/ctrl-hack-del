@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Skill } from "../constants/types";
 import { AVAILABLE_SKILLS, TechSkill } from "../constants/onboarding";
+import { api } from "../services/api";
 
 interface SkillsStepProps {
   skills: Skill[];
@@ -34,6 +35,7 @@ export const SkillsStep = ({
         ...skills,
         {
           name: techSkill.name,
+          category: techSkill.category,
           icon: techSkill.icon,
         },
       ]);
@@ -44,9 +46,18 @@ export const SkillsStep = ({
     setSkills(skills.filter((s) => s.name !== skillName));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onNext();
+    await api
+      .updateSkills(
+        skills.map((s) => ({
+          name: s.name,
+          category: s.category,
+        }))
+      )
+      .then(() => {
+        onNext();
+      });
   };
 
   const renderSkillsSection = (category: string, skillsList: TechSkill[]) => {
