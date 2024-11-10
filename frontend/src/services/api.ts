@@ -1,3 +1,4 @@
+import { MatchResult } from "../components/JobMatch";
 import {
   Award,
   Experience,
@@ -397,6 +398,29 @@ export const api = {
       return await response.json();
     } catch (error) {
       console.error("Job matching error:", error);
+      throw error;
+    }
+  },
+
+  async generateResumeFromMatches(matches: MatchResult[]) {
+    try {
+      const response = await fetch(`${API_URL}/rank/generate-resume`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ matches }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Resume generation failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Resume generation error:", error);
       throw error;
     }
   },
