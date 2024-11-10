@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import Link from './resume/Link';
 import Experience from './resume/Experience';
 import Education from './resume/Education';
+import Skills from './resume/Skills';
+import Projects from './resume/Projects';
+import Extracurriculars from './resume/Extracurriculars';
+import Awards from './resume/Awards';
 
 const Home: React.FC = () => {
 
@@ -13,6 +17,10 @@ const Home: React.FC = () => {
 			<Link />
 			<Experience />
 			<Education />
+			<Skills />
+			<Projects />
+			<Extracurriculars />
+			<Awards />
     	</div>
   );
 };
