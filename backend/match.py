@@ -83,6 +83,7 @@ def jobRanking(user, job):
 
 
 # for the params, ranking comes from the above function, and has to be passed in as a userobject or else nono work. you can get it into userform by using the function on line 18
+# returns a resume class, which has a topdf and tolatex function.
 def resumeGenerate(ranking: list, user:User):
     experience = []
     projects = []
