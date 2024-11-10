@@ -99,22 +99,23 @@ const Tailor: React.FC = () => {
         <>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="sections" type="section">
-              {(provided, snapshot) => (
+              {(provided) => (
                 <div
-                  className={`sections ${
-                    snapshot.isDraggingOver ? "dragging-over" : ""
-                  }`}
+                  className="sections"
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  {resume.sections.map((section, index) => (
-                    <DraggableSection
-                      key={`section-${index}`}
-                      sectionTitle={Object.keys(section)[0]}
-                      items={section[Object.keys(section)[0]]}
-                      index={index}
-                    />
-                  ))}
+                  {resume.sections.map((section, index) => {
+                    const sectionKey = Object.keys(section)[0];
+                    return (
+                      <DraggableSection
+                        key={sectionKey}
+                        sectionTitle={sectionKey}
+                        items={section[sectionKey]}
+                        index={index}
+                      />
+                    );
+                  })}
                   {provided.placeholder}
                 </div>
               )}
