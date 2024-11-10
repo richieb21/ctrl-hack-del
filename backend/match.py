@@ -25,7 +25,8 @@ def jobRanking(user, job):
         job_key_maps[keyword[0]] = job_key_maps[keyword[1]]
         job_keywords_strings.append(keyword[0])
     
-    ranking = []
+    project_ranking = []
+    experience_ranking = []
     for i, exp in enumerate(user_object.experiences):
         exp_keywords = extractPhrases(exp)
         exp_keywords_strings = []
@@ -36,9 +37,24 @@ def jobRanking(user, job):
         score = 0
         for keyword in experience_keywords:
             score += keyword[2] * job_key_maps[keyword[1]]
-            ranking.append([score, i])
-    return ranking
+            experience_ranking.append([score, i])
+    for i, exp in enumerate(user_object.projects):
+        exp_keywords = extractPhrases(exp)
+        exp_keywords_strings = []
+        for keyword in exp_keywords:
+            exp_keywords_strings.append(keyword[0])
+        experience_keywords = transformWords(exp_keywords_strings, job_keywords_strings)
+
+        score = 0
+        for keyword in experience_keywords:
+            score += keyword[2] * job_key_maps[keyword[1]]
+            project_ranking.append([score, i])
+    return [experience_ranking,project_ranking]
 
 def jobMatching(ranking:list):
-    ranking.sort()
+    ranking[0].sort()
+    ranking[1].sort()
+
+    n = 5
+    
 
