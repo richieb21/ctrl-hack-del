@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "./Link";
-import Experience from "./Experience";
 import Education from "./Education";
 import Skills from "./Skills";
 import Projects from "./Projects";
 import Extracurriculars from "./Extracurriculars";
 import Awards from "./Awards";
 import { User } from "../../constants/types";
+import ExperienceComp from "./ExperienceComp";
 
 const Resume = ({ user }: { user: User }) => {
   return (
@@ -20,7 +20,7 @@ const Resume = ({ user }: { user: User }) => {
         </p>
       </div>
       <Link links={user.links} />
-      <Experience />
+      <ExperienceComp experiences={user.experiences}/>
       <Education />
       <Skills />
       <Projects projects={user.projects} />
