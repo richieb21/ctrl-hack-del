@@ -6,5 +6,4 @@ rake = Rake()
 
 def extractPhrases(string):
     rake.extract_keywords_from_text(string)
-    return rake.get_ranked_phrases_with_scores()
-
+    return rake.get_ranked_phrases()
