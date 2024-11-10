@@ -60,7 +60,6 @@ class School(Entry):
     def __init__(self, title, subTitle, timeFrom, timeTo, location):
         super().__init__(title, subTitle, timeFrom, timeTo, location)
 
-
 class Extracurricular(Entry):
     def __init__(self, title, subTitle, timeFrom, timeTo, location, subPoints=[]):
         super().__init__(title, subTitle, timeFrom, timeTo, location, subPoints)
@@ -68,7 +67,6 @@ class Extracurricular(Entry):
 class Project(Entry):
     def __init__(self, title, subTitle, timeFrom, timeTo, link, points):
         super().__init__(title, subTitle, timeFrom, timeTo, link, points)
-
 
 class Experience(Entry):
     def __init__(self, title, subTitle, timeFrom, timeTo, location, points):

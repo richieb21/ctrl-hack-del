@@ -1,7 +1,7 @@
 from bson import ObjectId
 
 class User:
-    def __init__(self, user_id, username, email, created_at, linkedin_profile=None, github_profile=None, phone_number=None, skills=None, experiences=None, generated_resumes=None):
+    def __init__(self, user_id, username, email, created_at, linkedin_profile=None, github_profile=None, phone_number=None, skills=None, experiences=None, education=None, generated_resumes=None):
         self.user_id = user_id
         self.username = username
         self.email = email
@@ -12,6 +12,7 @@ class User:
         self.phone_number = phone_number
         self.skills = skills if skills is not None else []
         self.experiences = experiences if experiences is not None else []
+        self.education = education if education is not None else []
         self.generated_resumes = generated_resumes if generated_resumes is not None else []
 
     @classmethod
@@ -26,6 +27,7 @@ class User:
             phone_number=profile_data.get("phone_number"),
             skills=profile_data.get("skills", []),
             experiences=profile_data.get("experiences", []),
+            education=profile_data.get("education", []),
             generated_resumes=profile_data.get("generated_resumes", [])
         )
 

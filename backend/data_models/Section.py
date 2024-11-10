@@ -3,7 +3,7 @@ from .Block import Block
 
 class Section(Block):
     def __init__(self, entries:Entry):
-        self.entries = entries # List of Entry objects
+        self.entries = entries
 
     def toDict(self):
         return [entry.toDict() for entry in self.entries]
