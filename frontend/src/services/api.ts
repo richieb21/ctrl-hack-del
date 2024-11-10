@@ -5,6 +5,7 @@ import {
   Links,
   Project,
   Education,
+  Resume,
 } from "../constants/types";
 
 const API_URL = "http://127.0.0.1:5000";
@@ -344,6 +345,31 @@ export const api = {
       return data.resume;
     } catch (error) {
       console.error("Generate resume JSON error:", error);
+      throw error;
+    }
+  },
+
+  async saveResumeOrder(resume: Resume) {
+    try {
+      const response = await fetch(`${API_URL}/resume/save-resume-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(resume),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Save resume order failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Save resume order error:", error);
       throw error;
     }
   },

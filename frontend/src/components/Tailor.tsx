@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import DraggableSection from "./tailor/DraggableSection";
 import { useResume } from "../context/ResumeContext";
@@ -7,6 +7,15 @@ import { api } from "../services/api";
 
 const Tailor: React.FC = () => {
   const { resume, loading, error, setResume, refreshResume } = useResume();
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    refreshResume();
+  }, []);
+
+  useEffect(() => {
+    console.log(resume);
+  }, [resume]);
 
   const onDragEnd = (result: DropResult) => {
     if (!resume) return;
@@ -55,11 +64,15 @@ const Tailor: React.FC = () => {
     if (!resume) return;
 
     try {
-      // await api.saveResumeJSON(resume);
+      setIsSaving(true);
+      await api.saveResumeOrder(resume);
+      await refreshResume();
       alert("Resume order saved successfully!");
     } catch (err) {
       console.error("Error saving resume order:", err);
       alert("Failed to save resume order. Please try again.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -104,7 +117,9 @@ const Tailor: React.FC = () => {
               )}
             </Droppable>
           </DragDropContext>
-          <button onClick={handleSave}>Save Changes</button>
+          <button onClick={handleSave} disabled={isSaving}>
+            {isSaving ? "Saving..." : "Save Changes"}
+          </button>
         </>
       ) : (
         <div>Loading resume sections...</div>
