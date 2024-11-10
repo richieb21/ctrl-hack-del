@@ -281,4 +281,50 @@ export const api = {
       throw error;
     }
   },
+
+  async generatePDF() {
+    try {
+      const response = await fetch(`${API_URL}/resume/generate-pdf`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Generate PDF failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Generate PDF error:", error);
+      throw error;
+    }
+  },
+
+  async compilePdf(latex: string) {
+    try {
+      const response = await fetch(`${API_URL}/resume/compile-pdf`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ latex }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Compile PDF failed");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Compile PDF error:", error);
+      throw error;
+    }
+  },
 };

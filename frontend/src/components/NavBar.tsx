@@ -66,15 +66,6 @@ const NavBar = () => {
         </div>
         <div
           className={`${
-            active === "logout" ? "bg-m-blue" : ""
-          } rounded-lg px-3 pb-2 mx-2 flex items-center justify-center`}
-        >
-          <button onClick={handleLogout} className="pt-2">
-            <FontAwesomeIcon icon={faSignOut} />
-          </button>
-        </div>
-        <div
-          className={`${
             active === "latex" ? "bg-m-blue" : ""
           } rounded-lg px-3 pb-2 mx-2 flex items-center justify-center`}
         >
@@ -85,6 +76,15 @@ const NavBar = () => {
             className="pt-2"
           >
             <FontAwesomeIcon icon={faCode} />
+          </button>
+        </div>
+        <div
+          className={`${
+            active === "logout" ? "bg-m-blue" : ""
+          } rounded-lg px-3 pb-2 mx-2 flex items-center justify-center`}
+        >
+          <button onClick={handleLogout} className="pt-2">
+            <FontAwesomeIcon icon={faSignOut} />
           </button>
         </div>
       </div>
