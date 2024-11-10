@@ -36,24 +36,6 @@ class Resume(Block):
 
         print(f"Generated PDF for {self.name} at {output_pdf_name}")
     
-        # doc.append(NoEscape(self.toLatex()))
-        # doc.generate_pdf(output_pdf_name, clean_tex=False)
-
-        # # Write LaTeX content to a temporary .tex file
-        # with open(temp_tex_file, "w") as tex_file:
-        #     tex_file.write(self.toLatex())
-
-        # # Use PDFLaTeX to create a PDF from the .tex file
-        # pdfl = PDFLaTeX.from_texfile(temp_tex_file)
-        # pdf, log, completed_process = pdfl.create_pdf(keep_pdf_file=True, keep_log_file=True)
-
-        # # Save the generated PDF to the output file with a dynamic name
-        # with open(output_pdf_name, "wb") as output_pdf:
-        #     output_pdf.write(pdf)
-
-        # # Clean up the temporary .tex file
-        # os.remove(temp_tex_file)
-
     def toLatex(self) -> str:
         ret = f"""\\documentclass[letterpaper,11pt]{{article}}
 

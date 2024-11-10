@@ -2,24 +2,6 @@ import re
 import uuid
 from .Block import Block
 
-# def latex_escape(text):
-#     # Dictionary of special characters and their escaped versions
-#         escape_chars = {
-#             '%': r'\%',
-#             '$': r'\$',
-#             '&': r'\&',
-#             '#': r'\#',
-#             '_': r'\_',
-#             '{': r'\{',
-#             '}': r'\}',
-#             '~': r'\textasciitilde{}',
-#             '^': r'\textasciicircum{}',
-#             '\\': r'\textbackslash{}'
-#         }
-#         # Replace each special character with its escaped version
-#         return re.sub('|'.join(re.escape(key) for key in escape_chars.keys()),
-#                     lambda k: escape_chars[k.group(0)], text)
-
 class Entry(Block):
     def __init__(self, title, subTitle, timeFrom, timeTo, location, subPoints=[]):
         self.id = str(uuid.uuid4())
