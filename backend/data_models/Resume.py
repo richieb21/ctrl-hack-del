@@ -2,12 +2,10 @@ from Section import Section
 import os
 from pylatex import Document
 from pylatex.utils import NoEscape
+from Block import Block
 
-import subprocess
 
-doc = Document()
-
-class Resume:
+class Resume(Block):
     def __init__(self, name, email, linkedin, phone, github, sections:Section):
         self.name = name
         self.email = email
@@ -16,11 +14,7 @@ class Resume:
         self.github = github
         self.sections = sections
 
-    def swapSection(self, ind1, ind2):
-        self.sections[ind1], self.sections[ind2] = self.sections[ind2], self.sections[ind1]
-
-    def toBlocks(self):
-        kids = self.sections
+    
 
     def resumeToPdf(self):
         output_pdf_name = f"resume-{self.name.replace(' ', '')}.pdf"

@@ -1,6 +1,5 @@
-from abc import ABC, abstractmethod
-import Point
 import re
+from Block import Block
 
 def latex_escape(text):
     # Dictionary of special characters and their escaped versions
@@ -20,7 +19,7 @@ def latex_escape(text):
         return re.sub('|'.join(re.escape(key) for key in escape_chars.keys()),
                     lambda k: escape_chars[k.group(0)], text)
 
-class Entry(ABC):
+class Entry():
     def __init__(self, title, subTitle, timeFrom, timeTo, location, subPoints=[]):
         self.title = title
         self.subTitle = subTitle
@@ -29,7 +28,9 @@ class Entry(ABC):
         self.location = location
         self.subPoints = subPoints
 
-    
+    def toBlocks(self):
+        kids = map(lambda section: section.toBlocks(), self.sections)
+        return Block(None, self.sections, kids)
 
     def toLatex(self):
         # Apply escaping to all attributes that may contain special characters
