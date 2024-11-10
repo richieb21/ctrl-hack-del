@@ -2,23 +2,23 @@ import re
 import uuid
 from .Block import Block
 
-def latex_escape(text):
-    # Dictionary of special characters and their escaped versions
-        escape_chars = {
-            '%': r'\%',
-            '$': r'\$',
-            '&': r'\&',
-            '#': r'\#',
-            '_': r'\_',
-            '{': r'\{',
-            '}': r'\}',
-            '~': r'\textasciitilde{}',
-            '^': r'\textasciicircum{}',
-            '\\': r'\textbackslash{}'
-        }
-        # Replace each special character with its escaped version
-        return re.sub('|'.join(re.escape(key) for key in escape_chars.keys()),
-                    lambda k: escape_chars[k.group(0)], text)
+# def latex_escape(text):
+#     # Dictionary of special characters and their escaped versions
+#         escape_chars = {
+#             '%': r'\%',
+#             '$': r'\$',
+#             '&': r'\&',
+#             '#': r'\#',
+#             '_': r'\_',
+#             '{': r'\{',
+#             '}': r'\}',
+#             '~': r'\textasciitilde{}',
+#             '^': r'\textasciicircum{}',
+#             '\\': r'\textbackslash{}'
+#         }
+#         # Replace each special character with its escaped version
+#         return re.sub('|'.join(re.escape(key) for key in escape_chars.keys()),
+#                     lambda k: escape_chars[k.group(0)], text)
 
 class Entry(Block):
     def __init__(self, title, subTitle, timeFrom, timeTo, location, subPoints=[]):
@@ -46,12 +46,12 @@ class Entry(Block):
 
     def toLatex(self):
         # Apply escaping to all attributes that may contain special characters
-        title = latex_escape(self.title)
-        timeFrom = latex_escape(self.timeFrom)
-        timeTo = latex_escape(self.timeTo)
-        subTitle = latex_escape(self.subTitle)
-        location = latex_escape(self.location)
-        subPoints = [latex_escape(point['text']) for point in self.subPoints]
+        title = super().latex_escape(self.title)
+        timeFrom = super().latex_escape(self.timeFrom)
+        timeTo = super().latex_escape(self.timeTo)
+        subTitle = super().latex_escape(self.subTitle)
+        location = super().latex_escape(self.location)
+        subPoints = [super().latex_escape(point['text']) for point in self.subPoints]
 
         # Create LaTeX string
         ret = f"""\n\t\\resumeSubheading{{{title}}}{{{timeFrom} -- {timeTo}}}{{{subTitle}}}{{{location}}}"""
@@ -87,14 +87,15 @@ class Project(Entry):
         }
 
     def toLatex(self):
-        title = latex_escape(self.title)
-        timeFrom = latex_escape(self.timeFrom)
-        timeTo = latex_escape(self.timeTo)
-        subTitle = latex_escape(self.subTitle)
-        link = latex_escape(self.link)
-        subPoints = [latex_escape(point['text']) for point in self.subPoints]
+        title = super().latex_escape(self.title)
+        timeFrom = super().latex_escape(self.timeFrom)
+        timeTo = super().latex_escape(self.timeTo)
+        subTitle = super().latex_escape(self.subTitle)
+        link = super().latex_escape(self.link)
 
-        ret = f"""\n\t\\resumeSubheading{{{title}}}{{{timeFrom}}}{{{subTitle}}}{{{link}}}"""
+        subPoints = [super().latex_escape(point['text']) for point in self.subPoints]
+
+        ret = f"""\n\t\\resumeSubheading{{{title}}}{{{timeFrom} -- {timeTo}}}{{{subTitle}}}{{\\href{{{link}}}{{\\underline{{View}}}}}}"""
         if subPoints:
             ret += "\n\t\\resumeItemListStart\n\t\t\t\\resumeItem{"
             ret += "}\n\t\t\t\\resumeItem{".join(subPoints)

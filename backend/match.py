@@ -90,17 +90,18 @@ def resumeGenerate(ranking: list, user:User):
 
     N = 6
     idx = 0
-    while(len(experience) + len(projects) <= N):
-        if(len(experience) == N - 1):
+    while len(experience) + len(projects) < N and idx < len(ranking):
+        if len(experience) == N - 1 and ranking[idx]['type'] == 'project':
             if(ranking[idx]['type'] == 'project'):
                 projects.append(Project(
                     title=ranking[idx]['title'],
-                    subTitle="",
+                    subTitle=ranking[idx]['position'],
                     timeFrom=ranking[idx]['date'],
+                    timeTo=ranking[idx]['date'],
                     link=ranking[idx]['link'],
                     points=ranking[idx]['description']
                 ))
-        elif(len(projects) == N - 1):
+        elif len(projects) == N - 1 and ranking[idx]['type'] == 'experience':
             if(ranking[idx]['type'] == 'experience'):
                 experience.append(Experience(
                     title=ranking[idx]['title'],
@@ -110,7 +111,7 @@ def resumeGenerate(ranking: list, user:User):
                     location=ranking[idx]['location']
                 ))
         else:
-            if(ranking[idx]['type'] == 'experience'):
+            if ranking[idx]['type'] == 'experience':
                 experience.append(Experience(
                     title=ranking[idx]['title'],
                     subTitle=ranking[idx]['subtitle'],
@@ -118,11 +119,12 @@ def resumeGenerate(ranking: list, user:User):
                     timeTo=ranking[idx]['date'],
                     location=ranking[idx]['location']
                 ))
-            else:
+            elif ranking[idx]['type'] == 'project':
                 projects.append(projects.append(Project(
                     title=ranking[idx]['title'],
                     subTitle=ranking[idx]['position'],
                     timeFrom=ranking[idx]['date'],
+                    timeTo=ranking[idx]['date'],
                     link=ranking[idx]['link'],
                     points=ranking[idx]['description']
                 )))
@@ -143,6 +145,7 @@ def resumeGenerate(ranking: list, user:User):
             subTitle=ec['position'],
             timeFrom='',
             timeTo='',
+            location='',
             subPoints=ec.get('points', [])
         ))
     skills = Skills(

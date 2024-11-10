@@ -2,7 +2,7 @@ import re
 
 class Block:
 
-    def latex_escape(text):
+    def latex_escape(self, text):
     # Dictionary of special characters and their escaped versions
         escape_chars = {
             '%': r'\%',
