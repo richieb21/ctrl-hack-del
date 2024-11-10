@@ -33,7 +33,7 @@ const Projects = () => {
 			<h2 className='text-h2 mb-2'>🚀 Projects</h2>
 			{isEditingProjects ? (
 			<div>
-				<div>
+				<div>0
 					<input type="text" value={"school"} />
 					<input type="text" value={"program"} />
 					<input type="text" value={"level"} />

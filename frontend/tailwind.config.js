@@ -7,7 +7,8 @@ module.exports = {
 			'l-blue': '#E6F1FF'
 		},
 		backgroundColor: {
-			'l-blue': '#E6F1FF'
+			'l-blue': '#E6F1FF',
+			'm-blue': '#93c0fa'
 		},
 		fontSize: {
 			'h1': '30px',
@@ -17,7 +18,8 @@ module.exports = {
 			's': '12px'
 		},
 		spacing: {
-			's' : '5px'
+			's' : '5px',
+			'm' : '1.25rem'
 		}
 	},
   },
