@@ -13,11 +13,7 @@ class Resume:
         self.github = github
         self.sections = sections
 
-    def swapSection(self, ind1, ind2):
-        self.sections[ind1], self.sections[ind2] = self.sections[ind2], self.sections[ind1]
-
-    def toBlocks(self):
-        kids = self.sections
+    
 
     def resumeToPdf(self):
         output_pdf_name = f"resume-{self.name.replace(' ', '')}.pdf"
