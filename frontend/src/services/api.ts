@@ -377,4 +377,27 @@ export const api = {
       throw error;
     }
   },
+
+  async matchJob(jobDescription: string) {
+    try {
+      const response = await fetch(`${API_URL}/rank/jobmatch`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ jobDescription }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Job matching failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Job matching error:", error);
+      throw error;
+    }
+  },
 };

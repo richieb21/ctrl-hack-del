@@ -191,6 +191,21 @@ def get_user_object(user_id):
     user = User.from_mongo(user_data, profile_data)
     return user
 
+def get_rankings(user_id, job):
+    try:
+        # Convert string user_id to ObjectId if it's not already
+        if isinstance(user_id, str):
+            user_id = ObjectId(user_id)
+            
+        # Get rankings
+        rankings = jobRanking(user_id, job)
+        matched_rankings = jobMatching(rankings)
+        return matched_rankings
+        
+    except Exception as e:
+        print(f"Error in get_rankings: {str(e)}")
+        raise e
+
 # Test the function
 if __name__ == "__main__":
     test_user_id = "67308e814e47c133160a54f1"

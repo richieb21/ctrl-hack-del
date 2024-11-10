@@ -4,7 +4,7 @@ from functools import wraps
 from dotenv import load_dotenv
 import os
 from bson.objectid import ObjectId
-from match import get_user_with_profile
+from match import get_user_with_profile, get_rankings
 load_dotenv()
 
 rank_bp = Blueprint('rank', __name__)
@@ -32,3 +32,35 @@ def rank_resume(user_id):
     user = get_user_with_profile(user_id)
     print(user)
     return jsonify({'message': 'Resume ranked successfully'}), 200
+
+@rank_bp.route('/jobmatch', methods=['POST'])
+@token_required
+def job_match(user_id):
+    data = request.get_json()
+    job_description = data.get('jobDescription')
+    
+    if not job_description:
+        return jsonify({'error': 'Job description is required'}), 400
+        
+    try:
+        # Get rankings using the job description
+        rankings = get_rankings(user_id, job_description)
+        
+        # Format the response
+        response = {
+            'matches': [{
+                'type': rank['type'],
+                'title': rank['title'],
+                'score': round(rank['score'], 2),
+                'subtitle': rank.get('subtitle', ''),
+                'date': rank.get('date', ''),
+                'location': rank.get('location', ''),
+                'content': rank.get('content', '')
+            } for rank in rankings]
+        }
+        
+        return jsonify(response), 200
+        
+    except Exception as e:
+        print(f"Error in job matching: {str(e)}")
+        return jsonify({'error': 'Failed to process job matching'}), 500
