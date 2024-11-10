@@ -1,4 +1,5 @@
-
-
 class Point:
-    pass
+    def __init__(self, string) -> None:
+        self.string = string
+    
+    

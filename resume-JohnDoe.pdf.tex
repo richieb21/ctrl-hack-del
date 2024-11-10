@@ -1,0 +1,142 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{\vspace{-4pt}\scshape\raggedright\large}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{\item\small{#1 \vspace{-2pt}}}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge \scshape John Doe} \\ \vspace{1pt}
+    \small 123-456-7890 $|$ \href{mailto:johndoe@example.com}{\underline{johndoe@example.com}} $|$ 
+    \href{https://linkedin.com/in/johndoe}{\underline{https://linkedin.com/in/johndoe}} $|$
+    \href{https://github.com/johndoe}{\underline{https://github.com/johndoe}}
+\end{center}
+\section{Education}
+\resumeSubHeadingListStart
+
+	\resumeSubheading{Bachelor of Science in Computer Science}{Sept 2018 -- June 2022}{University of Example}{Example City, EX}
+
+	\resumeSubheading{Master of Science in Data Science}{Sept 2023 -- Present}{Example Institute of Technology}{Example City, EX} \resumeSubHeadingListEnd\section{Extracurriculars}
+\resumeSubHeadingListStart
+
+	\resumeSubheading{Volunteer Teacher}{Jan 2020 -- Dec 2020}{Code for Good}{Example Community Center}
+	\resumeItemListStart
+			\resumeItem{Taught basic programming to underprivileged youth.}
+			\resumeItem{Organized weekly coding workshops.}
+		\resumeItemListEnd
+
+	\resumeSubheading{Club President}{Sept 2019 -- June 2021}{University Coding Club}{University of Example}
+	\resumeItemListStart
+			\resumeItem{Led a team of 20 members to organize hackathons and coding bootcamps.}
+			\resumeItem{Increased club membership by 50\%.}
+		\resumeItemListEnd \resumeSubHeadingListEnd\section{Projects}
+\resumeSubHeadingListStart
+
+	\resumeSubheading{Personal Portfolio Website}{Feb 2021 -- April 2021}{Self-Initiated}{https://portfolio.example.com}
+	\resumeItemListStart
+			\resumeItem{Built a responsive personal portfolio website using HTML, CSS, and JavaScript.}
+			\resumeItem{Showcases projects, skills, and contact information.}
+		\resumeItemListEnd
+
+	\resumeSubheading{Data Analysis Pipeline}{June 2022 -- Aug 2022}{Data Science Internship}{https://github.com/example/data-analysis-pipeline}
+	\resumeItemListStart
+			\resumeItem{Developed a data analysis pipeline to clean, process, and visualize large datasets.}
+			\resumeItem{Reduced data processing time by 30\%.}
+		\resumeItemListEnd \resumeSubHeadingListEnd\section{Experiences}
+\resumeSubHeadingListStart
+
+	\resumeSubheading{Software Engineer Intern}{May 2021 -- Aug 2021}{Tech Solutions Inc.}{Example City, EX}
+	\resumeItemListStart
+			\resumeItem{Developed a REST API to manage user data, reducing response time by 25\%.}
+			\resumeItem{Collaborated with the frontend team to integrate backend services.}
+		\resumeItemListEnd
+
+	\resumeSubheading{Junior Developer}{Sept 2022 -- May 2023}{InnovateX}{Example City, EX}
+	\resumeItemListStart
+			\resumeItem{Maintained and optimized e-commerce platform, improving page load speed by 40\%.}
+			\resumeItem{Automated recurring tasks, saving the team 10 hours per week.}
+		\resumeItemListEnd \resumeSubHeadingListEnd\section{Skills}
+\begin{itemize}[leftmargin=0.15in, label={}]
+        \small{\item{
+		\textbf{Languages}: Python, Java, C++ \\ 
+		\textbf{Frameworks}: Django, React \\ 
+		\textbf{Developer Tools}: Git, Docker, VS Code \\ 
+		\textbf{Other Skills}: SQL, Machine Learning}}
+        \end{itemize}\end{document}%
+\end{document}
