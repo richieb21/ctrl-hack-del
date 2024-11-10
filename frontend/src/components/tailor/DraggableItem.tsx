@@ -24,9 +24,10 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
+          {...provided.dragHandleProps}
           className="resume-item"
         >
-          <div className="item-header" {...provided.dragHandleProps}>
+          <div className="item-header">
             <h3>{item.title}</h3>
             <div className="item-subheader">
               <span>{item.subTitle}</span>
@@ -34,7 +35,10 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
               <span>{`${item.timeFrom} - ${item.timeTo}`}</span>
             </div>
           </div>
-          <Droppable droppableId={`${sectionIndex}-${itemIndex}`} type="bullet">
+          <Droppable
+            droppableId={`bullets-${sectionIndex}-${itemIndex}`}
+            type="bullet"
+          >
             {(provided) => (
               <div
                 ref={provided.innerRef}
@@ -43,7 +47,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
               >
                 {item.subPoints?.map((point, index) => (
                   <Draggable
-                    key={`bullet-${index}`}
+                    key={`bullet-${sectionIndex}-${itemIndex}-${index}`}
                     draggableId={`bullet-${sectionIndex}-${itemIndex}-${index}`}
                     index={index}
                   >

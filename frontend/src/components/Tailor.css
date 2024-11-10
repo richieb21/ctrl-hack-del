@@ -1,5 +1,7 @@
 .tailor {
   padding: 20px;
+  margin-left: 100px;
+  width: calc(100% - 100px);
 }
 
 .sections {
@@ -14,6 +16,7 @@
   margin-bottom: 10px;
   cursor: grab;
   border-radius: 4px;
+  user-select: none;
 }
 
 .resume-item {
@@ -23,6 +26,7 @@
   margin-bottom: 10px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  user-select: none;
 }
 
 .item-header {
@@ -44,4 +48,12 @@
 /* When dragging */
 .dragging {
   opacity: 0.5;
+}
+
+.items {
+  min-height: 50px;
+}
+
+.bullet-points {
+  min-height: 30px;
 }

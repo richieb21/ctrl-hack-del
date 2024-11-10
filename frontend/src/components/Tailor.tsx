@@ -37,19 +37,54 @@ const Tailor: React.FC = () => {
     const { source, destination, type } = result;
     if (!destination) return;
 
+    console.log("Drag result:", {
+      type,
+      source,
+      destination,
+      sourceSection: source.droppableId,
+      destSection: destination.droppableId,
+    });
+
     const newResume = { ...resume };
 
     if (type === "section") {
+      console.log("Moving section");
       const [removed] = newResume.sections.splice(source.index, 1);
       newResume.sections.splice(destination.index, 0, removed);
     } else if (type === "subsection") {
-      const sectionKey = Object.keys(newResume.sections[source.index])[0];
-      const items = newResume.sections[source.index][sectionKey];
+      console.log("Moving subsection");
+      const sourceSectionIndex = parseInt(
+        source.droppableId.replace("section-", "")
+      );
+      const destSectionIndex = parseInt(
+        destination.droppableId.replace("section-", "")
+      );
 
-      const [removed] = items.splice(source.index, 1);
-      items.splice(destination.index, 0, removed);
+      const sourceSectionKey = Object.keys(
+        newResume.sections[sourceSectionIndex]
+      )[0];
+      const sourceItems =
+        newResume.sections[sourceSectionIndex][sourceSectionKey];
+
+      const [removed] = sourceItems.splice(source.index, 1);
+
+      if (sourceSectionIndex !== destSectionIndex) {
+        const destSectionKey = Object.keys(
+          newResume.sections[destSectionIndex]
+        )[0];
+        newResume.sections[destSectionIndex][destSectionKey].splice(
+          destination.index,
+          0,
+          removed
+        );
+      } else {
+        sourceItems.splice(destination.index, 0, removed);
+      }
+
+      console.log("After move:", newResume.sections);
     } else if (type === "bullet") {
-      const [sectionIndex, itemIndex] = source.droppableId.split("-");
+      console.log("Moving bullet");
+      const [_, sectionIndex, itemIndex] = source.droppableId.split("-");
       const sectionKey = Object.keys(
         newResume.sections[parseInt(sectionIndex)]
       )[0];

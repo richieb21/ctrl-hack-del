@@ -19,11 +19,15 @@ const DraggableSection: React.FC<DraggableSectionProps> = ({
   return (
     <Draggable draggableId={`section-${index}`} index={index}>
       {(provided) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          style={provided.draggableProps.style}
+        >
           <div className="section-header" {...provided.dragHandleProps}>
             <h2>{sectionTitle}</h2>
           </div>
-          <Droppable droppableId={`${index}`} type="subsection">
+          <Droppable droppableId={`section-${index}`} type="subsection">
             {(provided) => (
               <div
                 ref={provided.innerRef}
