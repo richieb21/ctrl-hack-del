@@ -26,7 +26,7 @@ def jobRanking(user, job):
         job_keywords_strings.append(keyword[0])
     
     ranking = []
-    for exp in user_object.experiences:
+    for i, exp in enumerate(user_object.experiences):
         exp_keywords = extractPhrases(exp)
         exp_keywords_strings = []
         for keyword in exp_keywords:
@@ -36,5 +36,9 @@ def jobRanking(user, job):
         score = 0
         for keyword in experience_keywords:
             score += keyword[2] * job_key_maps[keyword[1]]
-            ranking.append(score)
+            ranking.append([score, i])
     return ranking
+
+def jobMatching(ranking:list):
+    ranking.sort()
+

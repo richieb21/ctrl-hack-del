@@ -1,13 +1,12 @@
 import Entry
-from abc import ABC, abstractmethod
+from Block import Block
 
-class Section(ABC):
+class Section(Block):
     def __init__(self, entries:Entry):
         self.entries = entries # List of Entry objects
     
     def toLatex(self):
         return "\n".join(map(lambda entry: entry.toLatex(), self.entries))
-
 
 class EducationSection(Section):
     def __init__(self, schools):

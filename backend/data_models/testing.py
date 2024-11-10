@@ -1,6 +1,5 @@
 from Entry import School, Project, Experience, Extracurricular, Skills
 from Resume import Resume
-import Point
 from Section import *
 
 # Example objects for each class
@@ -128,4 +127,4 @@ resume = Resume(
 )
 
 print(resume.toLatex())
-resume.resumeToPdf()
+# resume.resumeToPdf()
