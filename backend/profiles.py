@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import create_profile, get_profile_by_user_id, update_profile_skills, update_profile_projects, update_profile_links, get_user_by_id, update_profile_name
+from models import get_profile_by_user_id, update_profile_skills, update_profile_projects, update_profile_links, update_profile_name, update_profile_experiences, update_profile_extracurriculars, update_profile_awards, update_profile_education
 import jwt
 from functools import wraps
 from dotenv import load_dotenv
@@ -97,3 +97,35 @@ def update_name(user_id):
     name = data.get('name', '')
     update_profile_name(user_id, name)
     return jsonify({'message': 'Name updated successfully'})
+
+@profile_bp.route('/experiences', methods=['POST'])
+@token_required
+def update_experiences(user_id):
+    data = request.get_json()
+    experiences = data.get('experiences', [])
+    update_profile_experiences(user_id, experiences)
+    return jsonify({'message': 'Experiences updated successfully'})
+
+@profile_bp.route('/extracurriculars', methods=['POST'])
+@token_required
+def update_extracurriculars(user_id):
+    data = request.get_json()
+    extracurriculars = data.get('extracurriculars', [])
+    update_profile_extracurriculars(user_id, extracurriculars)
+    return jsonify({'message': 'Extracurriculars updated successfully'})
+
+@profile_bp.route('/awards', methods=['POST'])
+@token_required
+def update_awards(user_id):
+    data = request.get_json()
+    awards = data.get('awards', [])
+    update_profile_awards(user_id, awards)
+    return jsonify({'message': 'Awards updated successfully'})
+
+@profile_bp.route('/education', methods=['POST'])
+@token_required
+def update_education(user_id):
+    data = request.get_json()
+    education = data.get('education', [])
+    update_profile_education(user_id, education)
+    return jsonify({'message': 'Education updated successfully'})

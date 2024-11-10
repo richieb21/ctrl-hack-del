@@ -1,10 +1,9 @@
-from Section import Section
+from .Section import Section
 from latex import build_pdf
 import io
-# from pylatex import Document
-# from pylatex.utils import NoEscape
+from .Block import Block
 
-class Resume:
+class Resume(Block):
     def __init__(self, name, email, linkedin, phone, github, sections:Section):
         self.name = name
         self.email = email
@@ -13,7 +12,16 @@ class Resume:
         self.github = github
         self.sections = sections
 
-    
+    def toDict(self):
+        return {
+            "name": self.name,
+            "email": self.email,
+            "linkedin": self.linkedin,
+            "phone": self.phone,
+            "github": self.github,
+            "sections": [section.toDict() for section in self.sections]
+        }
+
 
     def resumeToPdf(self):
         output_pdf_name = f"resume-{self.name.replace(' ', '')}.pdf"

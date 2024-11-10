@@ -1,36 +1,44 @@
-import React, { useState } from 'react'
-import { AVAILABLE_SKILLS } from '../../constants/onboarding'
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWrench } from "@fortawesome/free-solid-svg-icons";
+import { AVAILABLE_SKILLS } from "../../constants/onboarding";
 
 const Skills = () => {
-	const [skills, setSkills] = useState(AVAILABLE_SKILLS);
+  const [skills, setSkills] = useState(AVAILABLE_SKILLS);
 
-	const removeSkill = (skillName: string) => {
-		setSkills(skills.filter((s) => s.name !== skillName));
-	  };
-	
-	return (
-		<div className="bg-l-blue m-5 p-5 rounded-lg">
-			<h2 className='text-h2 mb-2'>🔧 Skills</h2>
-				<div className="flex flex-wrap gap-2 m-2 p-2">
-					{skills.map((skill) => (
-					<div
-						key={skill.name}
-						className="flex items-center gap-2 bg-white px-3 py-2 rounded-full"
-					>
-						<skill.icon className="w-5 h-5" />
-						<span>{skill.name}</span>
-						<button
-						type="button"
-						onClick={() => removeSkill(skill.name)}
-						className="ml-2 text-gray-500 hover:text-red-500"
-						>
-						×
-						</button>
-					</div>
-					))}
-				</div>
-		</div>
-	)
-}
+  const removeSkill = (skillName: string) => {
+    setSkills(skills.filter((s) => s.name !== skillName));
+  };
 
-export default Skills
+  return (
+    <div className="bg-l-blue m-5 p-6 rounded-xl shadow-sm">
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-2">
+          <FontAwesomeIcon icon={faWrench} className="text-blue-500" />
+          <h2 className="text-xl font-semibold text-gray-800">Skills</h2>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {skills.map((skill) => (
+          <div
+            key={skill.name}
+            className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-lg text-sm border border-gray-100 hover:bg-white transition-colors"
+          >
+            <skill.icon className="w-4 h-4 text-gray-600" />
+            <span className="text-gray-700">{skill.name}</span>
+            <button
+              type="button"
+              onClick={() => removeSkill(skill.name)}
+              className="ml-1 text-gray-400 hover:text-red-500 transition-colors"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Skills;

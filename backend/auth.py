@@ -37,6 +37,7 @@ def register():
         return jsonify({'message': 'Email already exists'}), 409
 
     result = create_user(data['username'], data['email'], data['password'])
+    print(result)
     user_id = str(result.inserted_id)
     try:
         create_profile(user_id)

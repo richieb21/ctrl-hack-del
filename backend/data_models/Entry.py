@@ -1,5 +1,5 @@
 import re
-from Block import Block
+from .Block import Block
 
 def latex_escape(text):
     # Dictionary of special characters and their escaped versions
@@ -19,7 +19,7 @@ def latex_escape(text):
         return re.sub('|'.join(re.escape(key) for key in escape_chars.keys()),
                     lambda k: escape_chars[k.group(0)], text)
 
-class Entry():
+class Entry(Block):
     def __init__(self, title, subTitle, timeFrom, timeTo, location, subPoints=[]):
         self.title = title
         self.subTitle = subTitle
@@ -28,9 +28,15 @@ class Entry():
         self.location = location
         self.subPoints = subPoints
 
-    def toBlocks(self):
-        kids = map(lambda section: section.toBlocks(), self.sections)
-        return Block(None, self.sections, kids)
+    def toDict(self):
+        return {
+            "title": self.title,
+            "subTitle": self.subTitle,
+            "timeFrom": self.timeFrom,
+            "timeTo": self.timeTo,
+            "location": self.location,
+            "subPoints": self.subPoints
+        }
 
     def toLatex(self):
         # Apply escaping to all attributes that may contain special characters
@@ -84,3 +90,10 @@ class Skills(Entry):
         \\end{{itemize}}"""
         return ret
 
+    def toDict(self):
+        return {
+            "languages": self.subPoints[0],
+            "frameworks": self.subPoints[1],
+            "developer_tools": self.subPoints[2],
+            "other_skills": self.subPoints[3]
+        }

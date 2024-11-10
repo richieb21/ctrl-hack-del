@@ -1,6 +1,6 @@
 from Entry import School, Project, Experience, Extracurricular, Skills
 from Resume import Resume
-from Section import *
+from Section import SkillsSection, EducationSection, ExperiencesSection, ExtracurricularSection, ProjectsSection
 
 # Example objects for each class
 
@@ -128,3 +128,4 @@ resume = Resume(
 
 print(resume.toLatex())
 # resume.resumeToPdf()
+# print(resume.toDict())

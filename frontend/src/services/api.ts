@@ -1,4 +1,11 @@
-import { Links, Project } from "../constants/types";
+import {
+  Award,
+  Experience,
+  ExtraCurricular,
+  Links,
+  Project,
+  Education,
+} from "../constants/types";
 
 const API_URL = "http://127.0.0.1:5000";
 
@@ -137,6 +144,7 @@ export const api = {
 
       const data = await response.json();
       console.log(data);
+      console.log(data.projects);
 
       if (!response.ok) {
         const error = await response.json();
@@ -167,6 +175,155 @@ export const api = {
       }
     } catch (error) {
       console.error("Update name error:", error);
+      throw error;
+    }
+  },
+
+  async updateExperiences(experiences: Experience[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/experiences`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ experiences }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update experiences failed");
+      }
+    } catch (error) {
+      console.error("Update experiences error:", error);
+      throw error;
+    }
+  },
+
+  async updateExtracurriculars(extracurriculars: ExtraCurricular[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/extracurriculars`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ extracurriculars }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update extracurriculars failed");
+      }
+    } catch (error) {
+      console.error("Update extracurriculars error:", error);
+      throw error;
+    }
+  },
+
+  async updateAwards(awards: Award[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/awards`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ awards }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update awards failed");
+      }
+    } catch (error) {
+      console.error("Update awards error:", error);
+      throw error;
+    }
+  },
+
+  async updateEducation(education: Education[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/education`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ education }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update education failed");
+      }
+    } catch (error) {
+      console.error("Update education error:", error);
+      throw error;
+    }
+  },
+
+  async generateResume() {
+    try {
+      const response = await fetch(`${API_URL}/resume/generate-resume`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+      return data.latex_content;
+    } catch (error) {
+      console.error("Generate resume error:", error);
+      throw error;
+    }
+  },
+
+  async generatePDF() {
+    try {
+      const response = await fetch(`${API_URL}/resume/generate-pdf`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Generate PDF failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Generate PDF error:", error);
+      throw error;
+    }
+  },
+
+  async compilePdf(latex: string) {
+    try {
+      const response = await fetch(`${API_URL}/resume/compile-pdf`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ latex }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Compile PDF failed");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Compile PDF error:", error);
       throw error;
     }
   },
