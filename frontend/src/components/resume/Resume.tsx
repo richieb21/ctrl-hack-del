@@ -15,13 +15,13 @@ const Resume = ({ user }: { user: User }) => {
         <h1 className="text-4xl font-bold text-gray-800 mb-3">
           Hello, <span className="text-blue-500">{user.name}</span> 👋
         </h1>
-        <p className="text-gray-600 text-lg">
-          Welcome back to your resume builder
+        <p className="text-gray-600 text-xl">
+          Welcome back to your resume builder! Here is your master resume:
         </p>
       </div>
       <Link links={user.links} />
-      <ExperienceComp experiences={user.experiences}/>
-      <Education education={user.education}/>
+      <ExperienceComp experiences={user.experiences} />
+      <Education education={user.education} />
       <Skills />
       <Projects projects={user.projects} />
       <Extracurriculars />

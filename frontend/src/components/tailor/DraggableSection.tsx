@@ -2,6 +2,8 @@ import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { ResumeSection } from "../../constants/types";
 import DraggableItem from "./DraggableItem";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGripVertical } from "@fortawesome/free-solid-svg-icons";
 
 interface DraggableSectionProps {
   section: ResumeSection;
@@ -17,9 +19,19 @@ const DraggableSection: React.FC<DraggableSectionProps> = ({
   return (
     <Draggable draggableId={section.id} index={index}>
       {(provided) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          className="section-container"
+        >
           <div className="section-header" {...provided.dragHandleProps}>
-            <h2>{section.title}</h2>
+            <div className="flex items-center gap-2">
+              <FontAwesomeIcon
+                icon={faGripVertical}
+                className="text-blue-500"
+              />
+              <h2>{section.title}</h2>
+            </div>
           </div>
           <Droppable droppableId={section.id} type="subsection">
             {(provided) => (

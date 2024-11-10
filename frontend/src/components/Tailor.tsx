@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import DraggableSection from "./tailor/DraggableSection";
 import { useResume } from "../context/ResumeContext";
+import NavBar from "./NavBar";
 import "./Tailor.css";
 import { api } from "../services/api";
 
@@ -12,10 +13,6 @@ const Tailor: React.FC = () => {
   useEffect(() => {
     refreshResume();
   }, []);
-
-  useEffect(() => {
-    console.log(resume);
-  }, [resume]);
 
   const onDragEnd = (result: DropResult) => {
     if (!resume) return;
@@ -77,53 +74,92 @@ const Tailor: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-row m-5">
+        <NavBar />
+        <div className="flex-grow">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="error-container">
-        <p>{error}</p>
-        <button onClick={refreshResume}>Retry</button>
+      <div className="flex flex-row m-5">
+        <NavBar />
+        <div className="flex-grow">
+          <div className="error-container">
+            <p>{error}</p>
+            <button onClick={refreshResume}>Retry</button>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!resume) {
-    return <div>No resume data available.</div>;
+    return (
+      <div className="flex flex-row m-5">
+        <NavBar />
+        <div className="flex-grow">
+          <div>No resume data available.</div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="tailor">
-      {resume && resume.sections && resume.sections.length > 0 ? (
-        <>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="sections" type="section">
-              {(provided) => (
-                <div
-                  className="sections"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  {resume.sections.map((section, index) => (
-                    <DraggableSection
-                      key={section.id}
-                      section={section}
-                      index={index}
-                    />
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <button onClick={handleSave} disabled={isSaving}>
-            {isSaving ? "Saving..." : "Save Changes"}
-          </button>
-        </>
-      ) : (
-        <div>Loading resume sections...</div>
-      )}
+    <div className="flex flex-row m-5">
+      <NavBar />
+      <div className="flex-grow">
+        {resume && resume.sections && resume.sections.length > 0 ? (
+          <>
+            <div className="m-5 p-8 rounded-xl text-center">
+              <h1 className="text-4xl font-bold text-blue-500 mb-1">
+                Resume Builder
+              </h1>
+              <p className="text-gray-600 text-lg">
+                Drag and drop your resume points and resume items to reorder
+                them!
+              </p>
+            </div>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="sections" type="section">
+                {(provided) => (
+                  <div
+                    className="sections"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {resume.sections.map((section, index) => (
+                      <DraggableSection
+                        key={section.id}
+                        section={section}
+                        index={index}
+                      />
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <div className="flex justify-center my-8">
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+              >
+                {isSaving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div>Loading resume sections...</div>
+        )}
+      </div>
     </div>
   );
 };

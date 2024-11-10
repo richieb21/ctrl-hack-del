@@ -48,29 +48,45 @@ const LatexDisplay: React.FC = () => {
   return (
     <div className="flex flex-row m-5">
       <NavBar />
-      <div className="flex-grow p-4">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex gap-2">
-            <button
-              onClick={handleGenerateResume}
-              disabled={loading}
-              className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:bg-blue-300"
-            >
-              {loading ? "Generating..." : "Generate LaTeX Resume"}
-            </button>
-            {latex && (
+      <div className="flex-grow">
+        <div className="m-5 p-8 rounded-xl text-center">
+          <h1 className="text-4xl font-bold text-blue-500 mb-3">
+            Latex Generator + Compiler
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Generate your master resume at the click of a button! Preview the
+            latex and PDF
+          </p>
+        </div>
+
+        <div className="p-4">
+          <div
+            className={`mb-4 ${
+              !latex
+                ? "flex justify-center"
+                : "flex justify-between items-center"
+            }`}
+          >
+            <div className="flex gap-2">
               <button
-                onClick={handleCompilePdf}
-                disabled={compiling}
-                className="px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 disabled:bg-green-300"
+                onClick={handleGenerateResume}
+                disabled={loading}
+                className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:bg-blue-300"
               >
-                {compiling ? "Compiling..." : "Compile to PDF"}
+                {loading ? "Generating..." : "Generate LaTeX Resume"}
               </button>
-            )}
-          </div>
-          <div className="flex gap-2">
+              {latex && (
+                <button
+                  onClick={handleCompilePdf}
+                  disabled={compiling}
+                  className="px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 disabled:bg-green-300"
+                >
+                  {compiling ? "Compiling..." : "Compile to PDF"}
+                </button>
+              )}
+            </div>
             {latex && (
-              <>
+              <div className="flex gap-2">
                 <button
                   onClick={() => setViewMode("latex")}
                   className={`px-4 py-2 rounded-xl ${
@@ -99,30 +115,30 @@ const LatexDisplay: React.FC = () => {
                 >
                   Copy to Clipboard
                 </button>
-              </>
+              </div>
             )}
           </div>
-        </div>
 
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+          {error && <div className="text-red-500 mb-4">{error}</div>}
 
-        <div className="mt-4">
-          {viewMode === "latex" && latex && (
-            <div className="bg-gray-100 p-4 rounded-xl">
-              <pre className="whitespace-pre-wrap font-mono text-sm overflow-x-auto">
-                {latex}
-              </pre>
-            </div>
-          )}
-          {viewMode === "pdf" && pdfUrl && (
-            <div className="bg-gray-100 p-4 rounded-xl h-[800px]">
-              <iframe
-                src={pdfUrl}
-                className="w-full h-full"
-                title="Resume PDF"
-              />
-            </div>
-          )}
+          <div className="mt-4">
+            {viewMode === "latex" && latex && (
+              <div className="bg-gray-100 p-4 rounded-xl">
+                <pre className="whitespace-pre-wrap font-mono text-sm overflow-x-auto">
+                  {latex}
+                </pre>
+              </div>
+            )}
+            {viewMode === "pdf" && pdfUrl && (
+              <div className="bg-gray-100 p-4 rounded-xl h-[800px]">
+                <iframe
+                  src={pdfUrl}
+                  className="w-full h-full"
+                  title="Resume PDF"
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
