@@ -144,6 +144,7 @@ export const api = {
 
       const data = await response.json();
       console.log(data);
+	  console.log(data.projects);
 
       if (!response.ok) {
         const error = await response.json();

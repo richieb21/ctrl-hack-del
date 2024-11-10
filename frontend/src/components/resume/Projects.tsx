@@ -1,32 +1,16 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
+import { Project } from '../../constants/types';
 
-const Projects = () => {
-	const projects = [
-		{
-			name: "YouWriter",
-			date: "Jan 2024",
-			description: ["point 1", "point 2", "point 3"],
-			link: "https://github.com/yiyan023/YouWriter"
-		},
-		{
-			name: "TuneScriber",
-			date: "Aug 2024",
-			description: ["point 1", "point 2", "point 3"],
-			link: "https://github.com/yiyan023/TuneScriber"
-		},
-		{
-			name: "Pizza Studio",
-			date: "Sept 2024",
-			description: ["point 1", "point 2", "point 3"],
-			link: "https://github.com/yiyan023/pizza-studio"
-		}
-	]
-
+const Projects = ({ projects }: { projects: Project[] }) =>  {
 	const [isEditingProjects, setIsEditingProjects] = useState(false);
 
 	const handleEditProjects = () => {
 		setIsEditingProjects(!isEditingProjects);
-	  };
+	};
+
+	useEffect(() => {
+		console.log(projects);
+	}, [projects])
 
   return (
 	<div className="bg-l-blue m-5 p-5 rounded-lg relative">
@@ -43,9 +27,9 @@ const Projects = () => {
 			</div>
 			) : (
 			<div>
-				{
+				{projects &&	
 					projects.map((info, i) => (
-						<div className='flex flex-row mb-2 relative'>
+						<div key={i} className='flex flex-row mb-2 relative'>
 							<div className='m-5'>
 								logo
 							</div>
