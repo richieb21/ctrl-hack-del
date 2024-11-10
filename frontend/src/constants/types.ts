@@ -90,6 +90,11 @@ export type User = {
 	date: string;
 	points: string[];
   }[];
+  awards: {
+	title: string;
+	description: string;
+	date: string
+  }[];
   projects: Project[];
   generated_resumes: any[]; // Define later
 };
