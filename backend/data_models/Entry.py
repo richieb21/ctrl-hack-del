@@ -1,5 +1,5 @@
 import re
-from Block import Block
+from .Block import Block
 
 def latex_escape(text):
     # Dictionary of special characters and their escaped versions

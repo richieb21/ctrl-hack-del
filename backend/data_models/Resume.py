@@ -1,7 +1,7 @@
-from Section import Section
+from .Section import Section
 from latex import build_pdf
 import io
-from Block import Block
+from .Block import Block
 
 class Resume(Block):
     def __init__(self, name, email, linkedin, phone, github, sections:Section):

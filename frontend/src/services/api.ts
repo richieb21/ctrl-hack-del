@@ -144,7 +144,7 @@ export const api = {
 
       const data = await response.json();
       console.log(data);
-	  console.log(data.projects);
+      console.log(data.projects);
 
       if (!response.ok) {
         const error = await response.json();
@@ -259,6 +259,25 @@ export const api = {
       }
     } catch (error) {
       console.error("Update education error:", error);
+      throw error;
+    }
+  },
+
+  async generateResume() {
+    try {
+      const response = await fetch(`${API_URL}/resume/generate-resume`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log(data);
+      return data.latex_content;
+    } catch (error) {
+      console.error("Generate resume error:", error);
       throw error;
     }
   },

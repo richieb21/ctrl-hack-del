@@ -4,25 +4,26 @@ import {
   faUser,
   faPenToSquare,
   faSignOut,
+  faCode,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    
-    const [active, setActive] = useState('');
-    const [sliderPosition, setSliderPosition] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    useEffect(() => {
-        if (location.pathname === '/home') {
-            setActive('home');
-            setSliderPosition(-25);
-        } else if (location.pathname === '/tailor') {
-            setActive('tailor');
-            setSliderPosition(25);
-        }
-    }, [location.pathname, sliderPosition]);
+  const [active, setActive] = useState("");
+  const [sliderPosition, setSliderPosition] = useState(0);
+
+  useEffect(() => {
+    if (location.pathname === "/home") {
+      setActive("home");
+      setSliderPosition(-25);
+    } else if (location.pathname === "/tailor") {
+      setActive("tailor");
+      setSliderPosition(25);
+    }
+  }, [location.pathname, sliderPosition]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -34,7 +35,7 @@ const NavBar = () => {
       <div className="w-16 h-16 rounded-lg bg-blue-500 text-white fixed flex text-center items-center justify-center">
         <p>L</p>
       </div>
-      <div className="w-16 h-40 rounded-lg bg-blue-100 flex flex-col items-center justify-center p-3 fixed bottom-m my-5 gap-2">
+      <div className="w-16 h-52 rounded-lg bg-blue-100 flex flex-col items-center justify-center p-3 fixed bottom-m my-5 gap-2">
         <div
           className={`${
             active === "home" ? "bg-m-blue" : ""
@@ -72,9 +73,23 @@ const NavBar = () => {
             <FontAwesomeIcon icon={faSignOut} />
           </button>
         </div>
+        <div
+          className={`${
+            active === "latex" ? "bg-m-blue" : ""
+          } rounded-lg px-3 pb-2 mx-2 flex items-center justify-center`}
+        >
+          <button
+            onClick={() => {
+              navigate("/latex");
+            }}
+            className="pt-2"
+          >
+            <FontAwesomeIcon icon={faCode} />
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default NavBar;;
+export default NavBar;

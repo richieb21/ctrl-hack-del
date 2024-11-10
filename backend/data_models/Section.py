@@ -1,5 +1,5 @@
-import Entry
-from Block import Block
+from .Entry import Entry
+from .Block import Block
 
 class Section(Block):
     def __init__(self, entries:Entry):

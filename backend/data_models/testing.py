@@ -126,6 +126,6 @@ resume = Resume(
     sections=[education_section, extracurricular_section, project_section, experience_section, skills_section]
 )
 
-# print(resume.toLatex())
+print(resume.toLatex())
 # resume.resumeToPdf()
-print(resume.toDict())
+# print(resume.toDict())
