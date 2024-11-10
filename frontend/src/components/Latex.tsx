@@ -54,7 +54,7 @@ const LatexDisplay: React.FC = () => {
             <button
               onClick={handleGenerateResume}
               disabled={loading}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-blue-300"
+              className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:bg-blue-300"
             >
               {loading ? "Generating..." : "Generate LaTeX Resume"}
             </button>
@@ -62,7 +62,7 @@ const LatexDisplay: React.FC = () => {
               <button
                 onClick={handleCompilePdf}
                 disabled={compiling}
-                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:bg-green-300"
+                className="px-4 py-2 bg-green-500 text-white rounded-xl hover:bg-green-600 disabled:bg-green-300"
               >
                 {compiling ? "Compiling..." : "Compile to PDF"}
               </button>
@@ -73,7 +73,7 @@ const LatexDisplay: React.FC = () => {
               <>
                 <button
                   onClick={() => setViewMode("latex")}
-                  className={`px-4 py-2 rounded-lg ${
+                  className={`px-4 py-2 rounded-xl ${
                     viewMode === "latex"
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 hover:bg-gray-300"
@@ -84,7 +84,7 @@ const LatexDisplay: React.FC = () => {
                 {pdfUrl && (
                   <button
                     onClick={() => setViewMode("pdf")}
-                    className={`px-4 py-2 rounded-lg ${
+                    className={`px-4 py-2 rounded-xl ${
                       viewMode === "pdf"
                         ? "bg-blue-500 text-white"
                         : "bg-gray-200 hover:bg-gray-300"
@@ -95,7 +95,7 @@ const LatexDisplay: React.FC = () => {
                 )}
                 <button
                   onClick={handleCopyToClipboard}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                  className="px-4 py-2 bg-gray-500 text-white rounded-xl hover:bg-gray-600"
                 >
                   Copy to Clipboard
                 </button>
@@ -108,14 +108,14 @@ const LatexDisplay: React.FC = () => {
 
         <div className="mt-4">
           {viewMode === "latex" && latex && (
-            <div className="bg-gray-100 p-4 rounded-lg">
+            <div className="bg-gray-100 p-4 rounded-xl">
               <pre className="whitespace-pre-wrap font-mono text-sm overflow-x-auto">
                 {latex}
               </pre>
             </div>
           )}
           {viewMode === "pdf" && pdfUrl && (
-            <div className="bg-gray-100 p-4 rounded-lg h-[800px]">
+            <div className="bg-gray-100 p-4 rounded-xl h-[800px]">
               <iframe
                 src={pdfUrl}
                 className="w-full h-full"
