@@ -321,8 +321,12 @@ export const api = {
         throw new Error(error.message || "Compile PDF failed");
       }
 
-      const data = await response.json();
-      return data;
+      // Create a blob from the PDF data
+      const blob = await response.blob();
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(blob);
+      console.log(url);
+      return { pdf: url };
     } catch (error) {
       console.error("Compile PDF error:", error);
       throw error;

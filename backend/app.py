@@ -12,14 +12,12 @@ load_dotenv()
 app = Flask(__name__)
 
 # Update CORS configuration to handle credentials
-CORS(app, resources={
-    r"/*": {
-        "origins": "http://localhost:3000",
-        "supports_credentials": True,
-        "allow_headers": ["Content-Type", "Authorization"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    }
-})
+CORS(app, 
+     origins=["http://localhost:3000"],  # Specify as a list
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     expose_headers=["Content-Type", "Authorization"])
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 

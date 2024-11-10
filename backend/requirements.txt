@@ -7,3 +7,4 @@ rake_nltk
 flask-cors
 sentence-transformers
 latex
+PyLaTeX

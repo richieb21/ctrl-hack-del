@@ -10,6 +10,9 @@ from resume_builder import build_resume_from_profile
 from models import update_profile_education, update_profile_experiences, update_profile_projects, update_profile_skills, update_profile_extracurriculars
 from flask import request, jsonify
 import requests
+from flask import send_file
+import tempfile
+from latex import build_pdf  # Make sure you have PyLaTeX installed
 
 load_dotenv()
 
@@ -74,17 +77,41 @@ def compile_pdf():
         if not latex_content:
             return jsonify({'error': 'No LaTeX content provided'}), 400
 
-        # The URL that will serve the compiled PDF
-        pdf_url = f"https://latexonline.cc/compile?text={requests.utils.quote(latex_content)}"
+        # Replace fullpage package with geometry settings
+        latex_content = latex_content.replace(
+            r'\usepackage[empty]{fullpage}',
+            r'\usepackage[margin=1in]{geometry}'
+        )
 
-        return jsonify({
-            'message': 'PDF compilation URL generated',
-            'pdf': pdf_url
-        })
+        # Create a temporary directory for the PDF
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pdf_path = os.path.join(temp_dir, 'resume.pdf')
+            
+            try:
+                # Print LaTeX content for debugging
+                print("LaTeX Content:", latex_content)
+                
+                # Compile LaTeX to PDF
+                pdf = build_pdf(latex_content, builder='pdflatex')
+                
+                # Save PDF to temporary file
+                with open(pdf_path, 'wb') as f:
+                    f.write(bytes(pdf))
+                
+                # Send the PDF file
+                return send_file(
+                    pdf_path,
+                    mimetype='application/pdf',
+                    as_attachment=True,
+                    download_name='resume.pdf'
+                )
+            except Exception as e:
+                print(f"LaTeX compilation error: {str(e)}")
+                return jsonify({'error': f'LaTeX compilation failed: {str(e)}'}), 500
 
     except Exception as e:
-        print(f"Error generating PDF URL: {str(e)}")
-        return jsonify({'error': 'Failed to generate PDF URL'}), 500
+        print(f"Error generating PDF: {str(e)}")
+        return jsonify({'error': f'Failed to generate PDF: {str(e)}'}), 500
     
 @resume_bp.route('/generate-resume-json', methods=['GET'])
 @token_required
