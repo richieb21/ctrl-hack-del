@@ -46,10 +46,19 @@ def generate_resume(user_id):
         # Build resume
         resume = build_resume_from_profile(profile_data)
         
-        # Generate PDF
+        # Generate LaTeX
         latex_content = resume.toLatex()
         
-        # You might want to save the PDF somewhere and return its URL
+        # Fix the LaTeX structure
+        latex_content = latex_content.replace(
+            r'\resumeSubHeadingListEnd\section{',
+            r'\end{itemize}\section{'
+        )
+        
+        # Ensure proper closing of environments
+        if not latex_content.endswith(r'\end{document}'):
+            latex_content = latex_content.rstrip() + r'\end{itemize}\end{document}'
+        
         return jsonify({
             'message': 'Resume generated successfully',
             'latex_content': latex_content

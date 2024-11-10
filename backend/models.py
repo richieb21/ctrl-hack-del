@@ -207,17 +207,21 @@ def get_user_by_id(user_id):
     return users_collection.find_one({"_id": ObjectId(user_id)})
 
 def update_profile_experiences(user_id, experiences):
+    if not get_profile_by_user_id(user_id):
+        print("Profile not found")
+        return None
+
+    # Add IDs to experiences and points if missing
     for experience in experiences:
         if 'id' not in experience:
-            experience['id'] = str(uuid.uuid4())  # Assign ID if not present
-
-        for point in experience.get('description', []):
+            experience['id'] = str(uuid.uuid4())
+        for point in experience.get('points', []):  # Changed from 'description' to 'points'
             if isinstance(point, dict) and 'id' not in point:
                 point['id'] = str(uuid.uuid4())
 
-    # Update the profile in the database
-    user_profiles_collection.update_one(
-        {'user_id': user_id},
+    # Update using ObjectId for user_id
+    return user_profiles_collection.update_one(
+        {'user_id': ObjectId(user_id)},  # Convert to ObjectId
         {'$set': {'experiences': experiences}}
     )
 
