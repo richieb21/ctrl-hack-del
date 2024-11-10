@@ -38,16 +38,62 @@ def create_profile(user_id):
     profile = {
         "user_id": ObjectId(user_id),
         "name": "",
-        "linkedin_profile": "",
-        "github_profile": "",
-        "phone_number": "",
+        "links": {
+            "linkedin_profile": "",
+            "github_profile": "",
+            "email": "",
+            "portfolio_link": "",
+            "x_profile": ""
+        },
         "skills": {
             "language": [],
             "framework": [],
             "tool": [],
             "other": []
         },
-        "experiences": [],
+        "experiences": [
+            {
+                "title": "",
+                "position": "",
+                "location": "",
+                "date": "",
+                "points": []
+            }
+        ],
+        "education": [
+            {
+                "schoolname": "",
+                "level": "",
+                "program": "",
+                "start": "",
+                "end": "",
+                "gpa": "",
+            }
+        ],
+        "projects": [
+            {
+                "name": "",
+                "date": "",
+                "description": [],
+                "link": ""
+            }
+        ],
+        "extra_curricular": [
+            {
+                "title": "",
+                "position": "",
+                "location": "",
+                "date": "",
+                "points": []
+            }
+        ],
+        "awards": [
+            {
+                "title": "",
+                "date": "",
+                "description": ""
+            }
+        ],
         "generated_resumes": []
     }
     return user_profiles_collection.insert_one(profile)
@@ -105,35 +151,50 @@ def update_profile_skills(user_id, categorized_skills):
     return categorized_skills
 
 def update_profile_projects(user_id, projects):
-    user_profiles_collection.update_one(
-        {"user_id": ObjectId(user_id)},
-        {"$set": {"projects": projects}}
-    )
-
-def update_profile_links(user_id, links):
-    # Update each link field individually
     if not get_profile_by_user_id(user_id):
         print("Profile not found")
         return None
         
-    update_fields = {}
-    if "linkedin" in links['links']:
-        update_fields["linkedin_profile"] = links['links']['linkedin']
-    if "github" in links['links']:
-        update_fields["github_profile"] = links["links"]["github"]
-    if "email" in links['links']:
-        update_fields["email"] = links["links"]["email"]
-    if "portfolio" in links['links']:
-        update_fields["portfolio_link"] = links["links"]["portfolio"]
-    if "x" in links['links']:
-        update_fields["x_profile"] = links["links"]["x"]
+    # Ensure each project has the required fields
+    formatted_projects = []
+    for project in projects:
+        formatted_project = {
+            "name": project.get('name', ''),
+            "date": project.get('date', ''),
+            "description": project.get('description', []),
+            "link": project.get('link', '')
+        }
+        formatted_projects.append(formatted_project)
     
-    if update_fields:
-        return user_profiles_collection.update_one(
-            {"user_id": ObjectId(user_id)},
-            {"$set": update_fields}
-        )
+    return user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"projects": formatted_projects}}
+    )
+
+def update_profile_links(user_id, data):
+    if not get_profile_by_user_id(user_id):
+        print("Profile not found")
+        return None
     
+    # Extract links from the nested structure
+    links = data.get('links', {})
+        
+    # Create the update fields structure
+    update_fields = {
+        "links": {
+            "linkedin_profile": links.get('linkedin', ''),
+            "github_profile": links.get('github', ''),
+            "email": links.get('email', ''),
+            "portfolio_link": links.get('portfolio', ''),
+            "x_profile": links.get('x', '')
+        }
+    }
+    
+    return user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": update_fields}
+    )
+
 def update_profile_name(user_id, name):
     user_profiles_collection.update_one(
         {"user_id": ObjectId(user_id)},

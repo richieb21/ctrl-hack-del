@@ -79,7 +79,8 @@ def update_skills(user_id):
 @token_required
 def update_projects(user_id):
     data = request.get_json()
-    update_profile_projects(user_id, data)
+    projects = data.get('projects', [])
+    update_profile_projects(user_id, projects)
     return jsonify({'message': 'Projects updated successfully'})
 
 @profile_bp.route('/links', methods=['POST'])

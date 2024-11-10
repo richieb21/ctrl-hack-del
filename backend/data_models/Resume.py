@@ -1,11 +1,10 @@
 from Section import Section
-import os
-from pylatex import Document
-from pylatex.utils import NoEscape
-from Block import Block
+from latex import build_pdf
+import io
+# from pylatex import Document
+# from pylatex.utils import NoEscape
 
-
-class Resume(Block):
+class Resume:
     def __init__(self, name, email, linkedin, phone, github, sections:Section):
         self.name = name
         self.email = email
@@ -19,8 +18,19 @@ class Resume(Block):
     def resumeToPdf(self):
         output_pdf_name = f"resume-{self.name.replace(' ', '')}.pdf"
         temp_tex_file = "temp.tex"
-        doc.append(NoEscape(self.toLatex()))
-        doc.generate_pdf(output_pdf_name, clean_tex=False)
+        latex_code = self.toLatex()
+
+        pdf = build_pdf(latex_code)
+        
+        pdf_data = bytes(pdf)
+
+        with open("example.pdf", "wb") as f:
+            f.write(pdf_data)
+
+        print(f"Generated PDF for {self.name} at {output_pdf_name}")
+    
+        # doc.append(NoEscape(self.toLatex()))
+        # doc.generate_pdf(output_pdf_name, clean_tex=False)
 
         # # Write LaTeX content to a temporary .tex file
         # with open(temp_tex_file, "w") as tex_file:
@@ -36,8 +46,6 @@ class Resume(Block):
 
         # # Clean up the temporary .tex file
         # os.remove(temp_tex_file)
-
-        print(f"Generated PDF for {self.name} at {output_pdf_name}")
 
 
     def toLatex(self) -> str:

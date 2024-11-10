@@ -13,7 +13,7 @@ def transformWords(setA, setB):
         best_match_index = similarity_matrix[i].argmax().item()
         best_match_score = similarity_matrix[i][best_match_index].item()
         best_match_word = setB[best_match_index]
-        
+
         best_matches.append((word, best_match_word, best_match_score))
 
     return best_matches

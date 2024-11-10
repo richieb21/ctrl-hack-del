@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from auth import auth_bp
 from profiles import profile_bp
+from rank_resume import rank_bp
 from dotenv import load_dotenv
 import os
 
@@ -23,6 +24,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(profile_bp, url_prefix='/user')
+app.register_blueprint(rank_bp, url_prefix='/rank')
 
 # Add a test endpoint
 @app.route('/test', methods=['GET'])
