@@ -13,8 +13,11 @@ export const RegisterPage = () => {
     e.preventDefault();
     try {
       await api.register(username, email, password);
-      navigate("/login");
+      const response = await api.login(email, password);
+      localStorage.setItem("token", response.token);
+      navigate("/onboarding");
     } catch (err) {
+      console.log(err);
       setError(err instanceof Error ? err.message : "Failed to register");
     }
   };
