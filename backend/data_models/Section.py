@@ -32,7 +32,9 @@ class EducationSection(Section):
         return super().toDict()
 
     def toLatex(self):
-        ret = f"\\section{{Education}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
+        ret = ""
+        if self.entries:
+            ret = f"\\section{{Education}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
         return ret
 
 class ProjectsSection(Section):
@@ -46,7 +48,9 @@ class ProjectsSection(Section):
         return super().toDict()
 
     def toLatex(self):
-        ret = f"\\section{{Projects}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
+        ret = ""
+        if self.entries:
+            ret = f"\\section{{Projects}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
         return ret
 
 class ExperiencesSection(Section):
@@ -60,7 +64,9 @@ class ExperiencesSection(Section):
         return super().toDict()
 
     def toLatex(self):
-        ret = f"\\section{{Experiences}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
+        ret = ""
+        if self.entries:
+            ret = f"\\section{{Experiences}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
         return ret
 
 class SkillsSection(Section):
@@ -74,7 +80,9 @@ class SkillsSection(Section):
         return super().toDict()
 
     def toLatex(self):
-        ret = f"\\section{{Skills}}\n" + super().toLatex()
+        ret = ""
+        if self.entries:
+            ret = f"\\section{{Skills}}\n" + super().toLatex()
         return ret
 
 class ExtracurricularSection(Section):
@@ -88,5 +96,7 @@ class ExtracurricularSection(Section):
         return super().toDict()
 
     def toLatex(self):
-        ret = f"\\section{{Extracurriculars}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
+        ret = ""
+        if self.entries:
+            ret = f"\\section{{Extracurriculars}}\n\\resumeSubHeadingListStart\n" + super().toLatex() + " \\resumeSubHeadingListEnd"
         return ret
