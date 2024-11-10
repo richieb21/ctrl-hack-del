@@ -48,13 +48,16 @@ export const SkillsStep = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await api.updateSkills(
-      skills.map((s) => ({
-        name: s.name,
-        category: s.category,
-      }))
-    );
-    onNext();
+    await api
+      .updateSkills(
+        skills.map((s) => ({
+          name: s.name,
+          category: s.category,
+        }))
+      )
+      .then(() => {
+        onNext();
+      });
   };
 
   const renderSkillsSection = (category: string, skillsList: TechSkill[]) => {

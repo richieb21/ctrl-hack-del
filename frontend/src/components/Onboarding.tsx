@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import { SkillsStep } from "./Skills";
-import { Skill } from "../constants/types";
+import { Project, Skill } from "../constants/types";
 import { LinksStep } from "./Links";
+import { ProjectStep } from "./Project";
 
 type Links = {
   github: string;
@@ -11,13 +12,6 @@ type Links = {
   portfolio: string;
   x: string;
   email: string;
-};
-
-type Project = {
-  title: string;
-  description: string;
-  technologies: string[];
-  link?: string;
 };
 
 export const Onboarding = () => {
@@ -32,21 +26,6 @@ export const Onboarding = () => {
   });
   const [skills, setSkills] = useState<Skill[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-
-  useEffect(() => {
-    console.log(skills);
-  }, [skills]);
-
-  const handleProjectsSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      // Submit all data to your API
-      await api.updateProfile({ links, skills, projects });
-      navigate("/dashboard");
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[#1a3b63] via-[#2b5c94] to-[#3d75b3]">
@@ -86,28 +65,12 @@ export const Onboarding = () => {
         )}
 
         {step === 3 && (
-          <form onSubmit={handleProjectsSubmit} className="space-y-4">
-            <h2 className="text-2xl font-bold text-[#1a3b63] mb-6">Projects</h2>
-            {/* Add project input fields */}
-            <button
-              type="button"
-              className="mb-4 text-[#2C74B3]"
-              onClick={() =>
-                setProjects([
-                  ...projects,
-                  { title: "", description: "", technologies: [] },
-                ])
-              }
-            >
-              + Add Project
-            </button>
-            <button
-              type="submit"
-              className="w-full px-8 py-3 text-lg font-semibold text-white bg-[#2C74B3] hover:bg-[#205295] rounded-full"
-            >
-              Complete
-            </button>
-          </form>
+          <ProjectStep
+            projects={projects}
+            setProjects={setProjects}
+            onNext={() => navigate("/dashboard")}
+            onBack={() => setStep(2)}
+          />
         )}
       </div>
     </div>

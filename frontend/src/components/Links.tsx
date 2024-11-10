@@ -1,4 +1,5 @@
 import { Links } from "../constants/types";
+import { api } from "../services/api";
 
 interface LinksStepProps {
   links: Links;
@@ -9,7 +10,9 @@ interface LinksStepProps {
 export const LinksStep = ({ links, setLinks, onNext }: LinksStepProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onNext();
+    api.updateLinks(links).then(() => {
+      onNext();
+    });
   };
 
   return (

@@ -1,3 +1,5 @@
+import { Links, Project } from "../constants/types";
+
 const API_URL = "http://127.0.0.1:5000";
 
 export const api = {
@@ -60,17 +62,6 @@ export const api = {
     }
   },
 
-  async updateProfile(data: any) {
-    try {
-      const response = await fetch(`${API_URL}/user/update`, {
-        method: "POST",
-      });
-    } catch (error) {
-      console.error("Update profile error:", error);
-      throw error;
-    }
-  },
-
   async updateSkills(skills: Array<{ name: string; category: string }>) {
     try {
       const response = await fetch(`${API_URL}/user/skills`, {
@@ -88,6 +79,48 @@ export const api = {
       }
     } catch (error) {
       console.error("Update skills error:", error);
+      throw error;
+    }
+  },
+
+  async updateProjects(projects: Project[]) {
+    try {
+      const response = await fetch(`${API_URL}/user/projects`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ projects }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update projects failed");
+      }
+    } catch (error) {
+      console.error("Update projects error:", error);
+      throw error;
+    }
+  },
+
+  async updateLinks(links: Links) {
+    try {
+      const response = await fetch(`${API_URL}/user/links`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ links }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Update links failed");
+      }
+    } catch (error) {
+      console.error("Update links error:", error);
       throw error;
     }
   },

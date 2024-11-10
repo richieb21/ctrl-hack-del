@@ -15,8 +15,8 @@ export type Links = {
 };
 
 export type Project = {
-  title: string;
-  description: string;
-  technologies: string[];
+  name: string;
+  date: string;
+  description: string[];
   link?: string;
 };

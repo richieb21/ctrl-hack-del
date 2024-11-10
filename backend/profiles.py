@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from models import create_profile, get_profile_by_user_id, update_profile, update_profile_skills
+from models import create_profile, get_profile_by_user_id, update_profile, update_profile_skills, update_profile_projects, update_profile_links
 import jwt
 from functools import wraps
 from dotenv import load_dotenv
@@ -99,3 +99,29 @@ def update_skills(user_id):
     except Exception as e:
         print(f"Error updating skills: {str(e)}")
         return jsonify({'message': 'Failed to update skills'}), 500
+
+@profile_bp.route('/projects', methods=['GET'])
+@token_required
+def get_projects(user_id):
+    profile = get_profile_by_user_id(user_id)
+    return jsonify(profile['projects'])
+
+@profile_bp.route('/projects', methods=['POST'])
+@token_required
+def update_projects(user_id):
+    data = request.get_json()
+    update_profile_projects(user_id, data)
+    return jsonify({'message': 'Projects updated successfully'})
+
+@profile_bp.route('/links', methods=['GET'])
+@token_required
+def get_links(user_id):
+    profile = get_profile_by_user_id(user_id)
+    return jsonify(profile['links'])
+
+@profile_bp.route('/links', methods=['POST'])
+@token_required
+def update_links(user_id):
+    data = request.get_json()
+    update_profile_links(user_id, data)
+    return jsonify({'message': 'Links updated successfully'})

@@ -102,3 +102,33 @@ def update_profile_skills(user_id, categorized_skills):
         )
 
     return categorized_skills
+
+def update_profile_projects(user_id, projects):
+    user_profiles_collection.update_one(
+        {"user_id": ObjectId(user_id)},
+        {"$set": {"projects": projects}}
+    )
+
+def update_profile_links(user_id, links):
+    # Update each link field individually
+    if not get_profile_by_user_id(user_id):
+        print("Profile not found")
+        return None
+        
+    update_fields = {}
+    if "linkedin" in links['links']:
+        update_fields["linkedin_profile"] = links['links']['linkedin']
+    if "github" in links['links']:
+        update_fields["github_profile"] = links["links"]["github"]
+    if "email" in links['links']:
+        update_fields["email"] = links["links"]["email"]
+    if "portfolio" in links['links']:
+        update_fields["portfolio_link"] = links["links"]["portfolio"]
+    if "x" in links['links']:
+        update_fields["x_profile"] = links["links"]["x"]
+    
+    if update_fields:
+        return user_profiles_collection.update_one(
+            {"user_id": ObjectId(user_id)},
+            {"$set": update_fields}
+        )
