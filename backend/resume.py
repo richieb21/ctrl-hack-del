@@ -75,3 +75,19 @@ def compile_pdf():
     except Exception as e:
         print(f"Error generating PDF URL: {str(e)}")
         return jsonify({'error': 'Failed to generate PDF URL'}), 500
+    
+@resume_bp.route('/generate-resume-json', methods=['GET'])
+@token_required
+def generate_resume_json(user_id):
+    try:
+        profile_data = get_profile_by_user_id(user_id)
+        resume = build_resume_from_profile(profile_data)
+
+        resume_json = resume.toDict()
+        return jsonify({
+            'message': 'Resume generated successfully',
+            'resume': resume_json
+        })
+    except Exception as e:
+        print(f"Error generating resume: {str(e)}")
+        return jsonify({'message': 'Failed to generate resume'}), 500
