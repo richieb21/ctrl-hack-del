@@ -327,4 +327,24 @@ export const api = {
       throw error;
     }
   },
+
+  async generateResumeJSON() {
+    console.log("Generating resume JSON...");
+    try {
+      const response = await fetch(`${API_URL}/resume/generate-resume-json`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await response.json();
+      console.log("Data received:", data);
+      return data.resume;
+    } catch (error) {
+      console.error("Generate resume JSON error:", error);
+      throw error;
+    }
+  },
 };

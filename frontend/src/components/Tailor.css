@@ -1,0 +1,47 @@
+.tailor {
+  padding: 20px;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: grab;
+  border-radius: 4px;
+}
+
+.resume-item {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-header {
+  cursor: grab;
+}
+
+.bullet-point {
+  background-color: #f8f8f8;
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 3px;
+  cursor: grab;
+}
+
+.bullet-point:hover {
+  background-color: #eee;
+}
+
+/* When dragging */
+.dragging {
+  opacity: 0.5;
+}
