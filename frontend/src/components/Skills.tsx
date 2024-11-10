@@ -82,7 +82,7 @@ export const SkillsStep = ({
                     : "hover:bg-gray-50 hover:border-[#2C74B3]"
                 }`}
             >
-              <skill.icon className="w-5 h-5" />
+              {skill.icon && <skill.icon className="w-5 h-5" />}
               <span>{skill.name}</span>
             </button>
           ))}
@@ -111,7 +111,7 @@ export const SkillsStep = ({
             key={skill.name}
             className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-full"
           >
-            <skill.icon className="w-5 h-5" />
+            {skill.icon && <skill.icon className="w-5 h-5" />}
             <span>{skill.name}</span>
             <button
               type="button"

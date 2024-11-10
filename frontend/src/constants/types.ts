@@ -3,7 +3,7 @@ import { IconType } from "react-icons";
 export type Skill = {
   name: string;
   category: string;
-  icon: IconType;
+  icon?: IconType;
 };
 
 export type Links = {
@@ -69,31 +69,31 @@ export type User = {
     other: string[];
   };
   education: {
-	schoolname: string;
-	level: string; 
-	program: string;
-	start: string;
-	end: string;
-	gpa: string;
+    schoolname: string;
+    level: string;
+    program: string;
+    start: string;
+    end: string;
+    gpa: string;
   }[];
   experiences: {
     title: string;
-	position: string;
-	location: string;
-	date: string;
-	points: string[];
+    position: string;
+    location: string;
+    date: string;
+    points: string[];
   }[];
   extra_curricular: {
-	title: string;
-	location: string;
-	position: string;
-	date: string;
-	points: string[];
+    title: string;
+    location: string;
+    position: string;
+    date: string;
+    points: string[];
   }[];
   awards: {
-	title: string;
-	description: string;
-	date: string
+    title: string;
+    description: string;
+    date: string;
   }[];
   projects: Project[];
   generated_resumes: any[]; // Define later

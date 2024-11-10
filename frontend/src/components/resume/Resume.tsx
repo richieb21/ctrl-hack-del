@@ -8,6 +8,8 @@ import Awards from "./Awards";
 import { User } from "../../constants/types";
 import ExperienceComp from "./ExperienceComp";
 
+import { AVAILABLE_SKILLS } from "../../constants/onboarding";
+
 const Resume = ({ user }: { user: User }) => {
   return (
     <div>
@@ -22,10 +24,20 @@ const Resume = ({ user }: { user: User }) => {
       <Link links={user.links} />
       <ExperienceComp experiences={user.experiences} />
       <Education education={user.education} />
-      <Skills />
+      <Skills
+        skills={Object.entries(user.skills).flatMap(([category, items]) =>
+          items.map((item) => ({
+            category,
+            name: item,
+            icon: AVAILABLE_SKILLS.find(
+              (skill) => skill.name.toLowerCase() === item.toLowerCase()
+            )?.icon,
+          }))
+        )}
+      />
       <Projects projects={user.projects} />
-      <Extracurriculars extracurriculars={user.extra_curricular}/>
-      <Awards awards={user.awards}/>
+      <Extracurriculars extracurriculars={user.extra_curricular} />
+      <Awards awards={user.awards} />
     </div>
   );
 };

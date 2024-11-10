@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWrench } from "@fortawesome/free-solid-svg-icons";
-import { AVAILABLE_SKILLS } from "../../constants/onboarding";
+import { Skill } from "../../constants/types";
 
-const Skills = () => {
-  const [skills, setSkills] = useState(AVAILABLE_SKILLS);
+const Skills = ({ skills }: { skills: Skill[] }) => {
+  const [skillsState, setSkillsState] = useState<Skill[]>(skills);
 
   const removeSkill = (skillName: string) => {
-    setSkills(skills.filter((s) => s.name !== skillName));
+    setSkillsState(skillsState.filter((s) => s.name !== skillName));
   };
 
   return (
@@ -20,12 +20,12 @@ const Skills = () => {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {skills.map((skill) => (
+        {skillsState.map((skill) => (
           <div
             key={skill.name}
             className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-lg text-sm border border-gray-100 hover:bg-white transition-colors"
           >
-            <skill.icon className="w-4 h-4 text-gray-600" />
+            {skill.icon && <skill.icon className="w-4 h-4 text-gray-600" />}
             <span className="text-gray-700">{skill.name}</span>
             <button
               type="button"
