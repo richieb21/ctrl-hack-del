@@ -68,6 +68,14 @@ export type User = {
     tool: string[];
     other: string[];
   };
+  education: {
+	schoolname: string;
+	level: string; 
+	program: string;
+	start: string;
+	end: string;
+	gpa: string;
+  }[];
   experiences: {
     title: string;
 	position: string;

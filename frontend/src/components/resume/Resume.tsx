@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "./Link";
-import Education from "./Education";
+import Education from "./EducationComp";
 import Skills from "./Skills";
 import Projects from "./Projects";
 import Extracurriculars from "./Extracurriculars";
@@ -21,7 +21,7 @@ const Resume = ({ user }: { user: User }) => {
       </div>
       <Link links={user.links} />
       <ExperienceComp experiences={user.experiences}/>
-      <Education />
+      <Education education={user.education}/>
       <Skills />
       <Projects projects={user.projects} />
       <Extracurriculars />

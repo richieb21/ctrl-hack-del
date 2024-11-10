@@ -41,7 +41,6 @@ const ExperienceComp = ({ experiences }: { experiences: { title: string; positio
 	setExp(newExp);
 
 	await api.updateExperiences(newExp);
-	console.log("success")
   }
 
   return (

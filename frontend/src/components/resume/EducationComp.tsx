@@ -1,36 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import uw from "../../assets/logos/uw.png";
 import mhs from "../../assets/logos/mhs.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap, faPen } from "@fortawesome/free-solid-svg-icons";
+import { Education } from "../../constants/types";
+import { api } from "../../services/api";
 
-const Education = () => {
+const EducationComp = ({ education }: { education: {schoolname: string, level: string, program: string, start: string, end: string, gpa: string }[]; } ) => {
   const [isEditingEducation, setIsEditingEducation] = useState(false);
+  const [edu, setEdu] = useState(education)
+  const [curIndex, setCurIndex] = useState(0);
+  const [curEdu, setCurEdu] = useState(education[curIndex])
 
-  const handleEditEducation = () => {
+  const handleEditEducation = (i:number) => {
     setIsEditingEducation(!isEditingEducation);
+	setCurIndex(i);
   };
 
-  const education = [
-    {
-      logo: uw,
-      schoolname: "University of Waterloo",
-      level: "Bachelor's",
-      program: "Computer Science",
-      start: "Sept 2023",
-      end: "Present",
-      gpa: "3.8",
-    },
-    {
-      logo: mhs,
-      schoolname: "Merivale High School",
-      level: "High School",
-      program: "IB",
-      start: "Sept 2019",
-      end: "June 2023",
-      gpa: "98.3%",
-    },
-  ];
+  useEffect(() => {
+	setCurEdu(education[curIndex])
+  }, [curIndex])
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Education) => {
+	setCurEdu({
+	  ...curEdu,
+	  [field]: e.target.value,
+	});
+  };
+
+  const saveEducation = async () => {
+	setIsEditingEducation(!isEditingEducation);
+	const newEdu = [...edu]
+	newEdu[curIndex] = curEdu;
+	console.log(newEdu[curIndex], curIndex)
+	setEdu(newEdu);
+
+	await api.updateEducation(newEdu);
+  }
 
   return (
     <div className="bg-l-blue m-5 p-6 rounded-xl shadow-sm">
@@ -45,6 +51,8 @@ const Education = () => {
         <div className="space-y-3 max-w-2xl">
           <input
             type="text"
+			value={curEdu.schoolname}
+			onChange={(e) => {handleInputChange(e, 'schoolname')}}
             placeholder="School Name"
             className="w-full p-1.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
           />
@@ -52,11 +60,15 @@ const Education = () => {
             <input
               type="text"
               placeholder="Program"
+			  value={curEdu.program}
+			  onChange={(e) => {handleInputChange(e, 'program')}}
               className="w-1/2 p-1.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
             />
             <input
               type="text"
               placeholder="Level"
+			  value={curEdu.level}
+			  onChange={(e) => {handleInputChange(e, 'level')}}
               className="w-1/2 p-1.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
             />
           </div>
@@ -64,21 +76,27 @@ const Education = () => {
             <input
               type="text"
               placeholder="Start Date"
+			  value={curEdu.start}
+			  onChange={(e) => {handleInputChange(e, 'start')}}
               className="w-1/2 p-1.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
             />
             <input
               type="text"
               placeholder="End Date"
+			  value={curEdu.end}
+			  onChange={(e) => {handleInputChange(e, 'end')}}
               className="w-1/2 p-1.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
             />
           </div>
           <input
             type="text"
             placeholder="GPA"
+			value={curEdu.gpa}
+			  onChange={(e) => {handleInputChange(e, 'gpa')}}
             className="w-full p-1.5 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
           />
           <button
-            onClick={handleEditEducation}
+            onClick={saveEducation}
             className="px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
           >
             Save Changes
@@ -86,14 +104,10 @@ const Education = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          {education.map((edu, index) => (
-            <div key={index} className="relative group">
+          {edu.map((edu, i) => (
+            <div key={i} className="relative group">
               <div className="flex items-start gap-4">
-                <img
-                  src={edu.logo}
-                  className="w-12 h-12 object-contain"
-                  alt={edu.schoolname}
-                />
+                logo
                 <div className="flex-grow">
                   <h3 className="text-lg font-semibold text-gray-800">
                     {edu.schoolname}
@@ -107,7 +121,7 @@ const Education = () => {
                 </div>
                 <button
                   className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-white/50 rounded-full"
-                  onClick={handleEditEducation}
+                  onClick={() => {handleEditEducation(i)}}
                 >
                   <FontAwesomeIcon
                     icon={faPen}
@@ -123,4 +137,4 @@ const Education = () => {
   );
 };
 
-export default Education;
+export default EducationComp;
