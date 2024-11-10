@@ -22,19 +22,9 @@ const Resume = ({ user }: { user: User }) => {
         </p>
       </div>
       <Link links={user.links} />
-      <ExperienceComp experiences={user.experiences} />
-      <Education education={user.education} />
-      <Skills
-        skills={Object.entries(user.skills).flatMap(([category, items]) =>
-          items.map((item) => ({
-            category,
-            name: item,
-            icon: AVAILABLE_SKILLS.find(
-              (skill) => skill.name.toLowerCase() === item.toLowerCase()
-            )?.icon,
-          }))
-        )}
-      />
+      <ExperienceComp experiences={user.experiences}/>
+      <Education education={user.education}/>
+      <Skills skills={user.skills}/>
       <Projects projects={user.projects} />
       <Extracurriculars extracurriculars={user.extra_curricular} />
       <Awards awards={user.awards} />

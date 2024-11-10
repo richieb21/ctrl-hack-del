@@ -1,14 +1,79 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWrench } from "@fortawesome/free-solid-svg-icons";
-import { Skill } from "../../constants/types";
+import {
+	SiJavascript,
+	SiPython,
+	SiReact,
+	SiVuedotjs,
+	SiAngular,
+	SiNodedotjs,
+	SiTypescript,
+	SiRuby,
+	SiGo,
+	SiDocker,
+	SiKubernetes,
+	SiMongodb,
+	SiPostgresql,
+  } from "react-icons/si";
+  import { FaJava } from "react-icons/fa";
+import { api } from "../../services/api";
 
-const Skills = ({ skills }: { skills: Skill[] }) => {
-  const [skillsState, setSkillsState] = useState<Skill[]>(skills);
+const Skills = ({ skills } : {skills: {language: string[]; framework: string[]; tool: string[]; other: string[];}}) => {
+	const [skillArr, setSkillsArr] = useState([
+		...skills.language,
+		...skills.framework,
+		...skills.tool,
+		...skills.other
+	  ]);
 
-  const removeSkill = (skillName: string) => {
-    setSkillsState(skillsState.filter((s) => s.name !== skillName));
-  };
+	const skill_icons = {
+		"JavaScript": SiJavascript,
+		"Python": SiPython,
+		"React": SiReact,
+		"Vue.js": SiVuedotjs,
+		"Angular": SiAngular,
+		"Node.js": SiNodedotjs,
+		"TypeScript": SiTypescript,
+		"Ruby": SiRuby,
+		"Go": SiGo,
+		"Java": FaJava,
+		"Docker": SiDocker,
+		"Kubernetes": SiKubernetes,
+		"MongoDB": SiMongodb,
+		"PostgreSQL": SiPostgresql
+	}
+
+	const skill_type: { [key: string]: string } = {
+		"JavaScript": "Language",
+		"Python": "Language",
+		"React": "Framework",
+		"Vue.js": "Framework",
+		"Angular": "Framework",
+		"Node.js": "Framework",
+		"TypeScript": "Framework",
+		"Ruby": "Language",
+		"Go": "Language",
+		"Java": "Language",
+		"Docker": "Tool",
+		"Kubernetes": "Tool",
+		"MongoDB": "Tool",
+		"PostgreSQL": "Tool"
+	}
+
+	const removeSkill = async (skillName: string) => {
+		const new_arr = skillArr.filter((s) => s !== skillName);
+		console.log(new_arr)
+		setSkillsArr(new_arr);
+
+		let new_skills: { name: string; category: string }[] = [];
+
+		new_arr.map((name, i) => {
+			new_skills.push({ name: name, category: skill_type[name] });
+		  });
+		  
+		await api.updateSkills(new_skills)
+	};
 
   return (
     <div className="bg-l-blue m-5 p-6 rounded-xl shadow-sm">
@@ -20,16 +85,16 @@ const Skills = ({ skills }: { skills: Skill[] }) => {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {skillsState.map((skill) => (
+        {skillArr.map((skill) => (
           <div
-            key={skill.name}
+            key={skill}
             className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-lg text-sm border border-gray-100 hover:bg-white transition-colors"
           >
-            {skill.icon && <skill.icon className="w-4 h-4 text-gray-600" />}
-            <span className="text-gray-700">{skill.name}</span>
+            {React.createElement(skill_icons[skill as keyof typeof skill_icons], { className: "w-4 h-4 text-gray-600" })}
+            <span className="text-gray-700">{skill}</span>
             <button
               type="button"
-              onClick={() => removeSkill(skill.name)}
+              onClick={() => removeSkill(skill)}
               className="ml-1 text-gray-400 hover:text-red-500 transition-colors"
             >
               ×
