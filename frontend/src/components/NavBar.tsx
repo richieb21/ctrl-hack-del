@@ -8,18 +8,21 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    const [active, setActive] = useState('');
+    const [sliderPosition, setSliderPosition] = useState(0);
 
-  const [active, setActive] = useState("");
-
-  useEffect(() => {
-    if (location.pathname === "/home") {
-      setActive("home");
-    } else if (location.pathname === "/tailor") {
-      setActive("tailor");
-    }
-  }, [location.pathname]);
+    useEffect(() => {
+        if (location.pathname === '/home') {
+            setActive('home');
+            setSliderPosition(-25);
+        } else if (location.pathname === '/tailor') {
+            setActive('tailor');
+            setSliderPosition(25);
+        }
+    }, [location.pathname, sliderPosition]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -74,4 +77,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default NavBar;;

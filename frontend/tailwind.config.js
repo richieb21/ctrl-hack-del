@@ -20,7 +20,11 @@ module.exports = {
 		spacing: {
 			's' : '5px',
 			'm' : '1.25rem'
-		}
+		},
+		fontFamily: {
+			inter: ["Inter", "sans-serif"],
+			afacad: ["Afacad-Flux", "sans-serif"],
+		},
 	},
   },
   plugins: [],

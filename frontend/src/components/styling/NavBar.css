@@ -1,0 +1,15 @@
+.nav-item {
+    position: relative;
+    z-index: 1; /* Ensure the buttons are above the slider */
+}
+
+.slider {
+    position: absolute;
+    bottom: 32.5%; /* Start at the bottom of the nav container */
+    left: 17.5%; /* Align to the left */
+    width: 40px; /* Match button width */
+    height: 40px; /* Height of the slider */
+    background-color: #93c0fa; /* Color of the slider */
+    transition: transform 0.3s ease; /* Smooth transition */
+    z-index: 0; /* Ensure the slider is below the buttons */
+}
