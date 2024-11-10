@@ -54,8 +54,13 @@ export type Education = {
 
 export type User = {
   name: string;
-  linkedin_profile: string;
-  github_profile: string;
+  links: {
+	email: string;
+	github_profile: string,
+	linkedin_profile: string,
+	portfolio_link: string,
+	x_profile: string
+  }
   phone_number: string;
   skills: {
     language: string[];
