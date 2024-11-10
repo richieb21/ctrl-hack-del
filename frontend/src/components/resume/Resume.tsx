@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "./Link";
 import Experience from "./Experience";
 import Education from "./Education";
@@ -6,7 +7,6 @@ import Projects from "./Projects";
 import Extracurriculars from "./Extracurriculars";
 import Awards from "./Awards";
 import { User } from "../../constants/types";
-import { useEffect } from "react";
 
 const Resume = ({ user }: { user: User }) => {
   const links = [
@@ -16,14 +16,19 @@ const Resume = ({ user }: { user: User }) => {
 
   return (
     <div>
-      <div className="pt-5">
-        <h1 className="text-h1 ml-5">HELLO {user.name} 👋</h1>
+      <div className="m-5 p-8 rounded-xl text-center">
+        <h1 className="text-4xl font-bold text-gray-800 mb-3">
+          Hello, <span className="text-blue-500">{user.name}</span> 👋
+        </h1>
+        <p className="text-gray-600 text-lg">
+          Welcome back to your resume builder
+        </p>
       </div>
       <Link links={links} />
       <Experience />
       <Education />
       <Skills />
-      <Projects projects={user.projects}/>
+      <Projects projects={user.projects} />
       <Extracurriculars />
       <Awards />
     </div>
