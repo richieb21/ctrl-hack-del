@@ -3,6 +3,9 @@ from wordMapping import transformWords
 from data_models.user import User
 from database import users_collection, user_profiles_collection
 from bson import ObjectId
+from data_models.Entry import School, Project, Experience, Extracurricular, Skills
+from data_models.Resume import Resume
+from data_models.Section import SkillsSection, EducationSection, ExperiencesSection, ExtracurricularSection, ProjectsSection
 
 def get_user_with_profile(user_id):
     print(user_id)
@@ -40,5 +43,17 @@ def jobRanking(user, job):
     return ranking
 
 def jobMatching(ranking:list):
-    ranking.sort()
+    experiences = sorted(ranking[0], reverse=True)
+    projects = sorted(ranking[1], reverse=True)
+    n = 5
+
+    if experiences:
+        exp = [experiences[0]]
+        n-=1
+    if projects:
+        proj = [projects[0]]
+        n-=1
+
+    
+
 

@@ -22,3 +22,6 @@ class Block:
     
     def swapSection(self, arr, ind1, ind2):
         arr[ind1], arr[ind2] = arr[ind2], arr[ind1]
+
+    def toDict():
+        pass

@@ -5,6 +5,5 @@ PyJWT
 python-dotenv
 rake_nltk
 flask-cors
-pdflatex
 sentence-transformers
 latex
