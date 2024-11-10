@@ -1,7 +1,8 @@
 from Section import Section
-import os
-from pdflatex import PDFLaTeX
-import subprocess
+from latex import build_pdf
+import io
+# from pylatex import Document
+# from pylatex.utils import NoEscape
 
 class Resume:
     def __init__(self, name, email, linkedin, phone, github, sections:Section):
@@ -12,28 +13,43 @@ class Resume:
         self.github = github
         self.sections = sections
 
-    
+    def swapSection(self, ind1, ind2):
+        self.sections[ind1], self.sections[ind2] = self.sections[ind2], self.sections[ind1]
+
+    def toBlocks(self):
+        kids = self.sections
+
     def resumeToPdf(self):
         output_pdf_name = f"resume-{self.name.replace(' ', '')}.pdf"
         temp_tex_file = "temp.tex"
+        latex_code = self.toLatex()
 
-        # Write LaTeX content to a temporary .tex file
-        with open(temp_tex_file, "w") as tex_file:
-            tex_file.write(self.toLatex())
+        pdf = build_pdf(latex_code)
+        
+        pdf_data = bytes(pdf)
 
-        # Use PDFLaTeX to create a PDF from the .tex file
-        pdfl = PDFLaTeX.from_texfile(temp_tex_file)
-        pdf, log, completed_process = pdfl.create_pdf(keep_pdf_file=True, keep_log_file=True)
-
-        # Save the generated PDF to the output file with a dynamic name
-        with open(output_pdf_name, "wb") as output_pdf:
-            output_pdf.write(pdf)
-
-        # Clean up the temporary .tex file
-        os.remove(temp_tex_file)
+        with open("example.pdf", "wb") as f:
+            f.write(pdf_data)
 
         print(f"Generated PDF for {self.name} at {output_pdf_name}")
+    
+        # doc.append(NoEscape(self.toLatex()))
+        # doc.generate_pdf(output_pdf_name, clean_tex=False)
 
+        # # Write LaTeX content to a temporary .tex file
+        # with open(temp_tex_file, "w") as tex_file:
+        #     tex_file.write(self.toLatex())
+
+        # # Use PDFLaTeX to create a PDF from the .tex file
+        # pdfl = PDFLaTeX.from_texfile(temp_tex_file)
+        # pdf, log, completed_process = pdfl.create_pdf(keep_pdf_file=True, keep_log_file=True)
+
+        # # Save the generated PDF to the output file with a dynamic name
+        # with open(output_pdf_name, "wb") as output_pdf:
+        #     output_pdf.write(pdf)
+
+        # # Clean up the temporary .tex file
+        # os.remove(temp_tex_file)
 
 
     def toLatex(self) -> str:
